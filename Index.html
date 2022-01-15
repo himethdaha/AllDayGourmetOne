@@ -9,8 +9,6 @@
     />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
       href="https://fonts.googleapis.com/css2?family=Shadows+Into+Light&family=Ubuntu:wght@400;500;700&display=swap"
       rel="stylesheet"
@@ -18,6 +16,7 @@
     <title>AllDayGourmet-Landing Page</title>
     <link rel="icon" href="imgs/icon.png" type="image/x-icon" />
     <link rel="stylesheet" href="style.css" />
+    <script defer src="script.js"></script>
   </head>
   <body class="container">
     <!--Title and navbar-->
@@ -165,6 +164,97 @@
         </div>
       </section>
 
+      <!--Testimonial Carousal-->
+      <h2 class="testimonal-header">What They Say</h2>
+      <h3 class="partners-section-header-text">
+        What Our Customers Say About Us
+      </h3>
+
+      <section class="testimonials-container">
+        <button class="btn btn--left">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            class="icon"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M15 19l-7-7 7-7"
+            />
+          </svg>
+        </button>
+        <div class="testimonial">
+          <div class="test testimonial-1">
+            <img
+              src="imgs/person-1.jpg"
+              alt="Photo of a male with a hat wearing a grey t-shirt"
+              class="testimonial-img img-1"
+            />
+            <blockquote class="testimonal-blockquote quote-1">
+              <p class="testimonial-text">
+                "Thanks for the great service. No matter where you go,
+                AllDayGourmet is the trending topic!"
+              </p>
+              <p class="testimonial-writer">~ Ian Dooley ~</p>
+            </blockquote>
+          </div>
+          <div class="test testimonial-2">
+            <img
+              src="imgs/person-2.jpg"
+              alt="Photo of a male with a hat wearing a grey t-shirt"
+              class="testimonial-img img-1"
+            />
+            <blockquote class="testimonal-blockquote quote-1">
+              <p class="testimonial-text">
+                "Fantastic, I'm totally blown away by AllDayGourmet. Food tastes
+                better when it's delivered with care and on time"
+              </p>
+              <p class="testimonial-writer">~ Toa Heftiba ~</p>
+            </blockquote>
+          </div>
+          <div class="test testimonial-3">
+            <img
+              src="imgs/person-3.jpg"
+              alt="Photo of a male with a hat wearing a grey t-shirt"
+              class="testimonial-img img-1"
+            />
+            <blockquote class="testimonal-blockquote quote-1">
+              <p class="testimonial-text">
+                "Would definitely recommend AllDayGourmet and will definitely be
+                ordering again."
+              </p>
+              <p class="testimonial-writer">~ Vanessa Dam ~</p>
+            </blockquote>
+          </div>
+        </div>
+
+        <button class="btn btn--right">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            class="icon"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M9 5l7 7-7 7"
+            />
+          </svg>
+        </button>
+        <div class="buttons">
+          <div class="circle-btn active" data-slide="0"></div>
+          <div class="circle-btn" data-slide="1"></div>
+          <div class="circle-btn" data-slide="2"></div>
+        </div>
+      </section>
+
       <!--Partnered with section-->
       <section class="partners-section">
         <h2 class="partners-header">Our Trusted Partners</h2>
@@ -194,63 +284,6 @@
             alt="Logo of Rimrock Cafe in Canada"
             class="partners-logo-img"
           />
-        </div>
-      </section>
-
-      <!--Testimonial Carousal-->
-      <h2 class="testimonal-header">What They Say</h2>
-      <section class="testimonials-container">
-        <button class="btn btn--left">
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            class="icon"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke="currentColor"
-          >
-            <path
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              stroke-width="2"
-              d="M15 19l-7-7 7-7"
-            />
-          </svg>
-        </button>
-        <div class="testimonial">
-          <img
-            src="imgs/person-1.jpg"
-            alt="Photo of a male with a hat wearing a grey t-shirt"
-            class="testimonial-img"
-          />
-          <blockquote class="testimonal-blockquote">
-            <p class="testimonial-text">
-              Thanks for the great service. No matter where you go,
-              AllDayGourmet is the trending topic!
-            </p>
-            <p class="testimonial-writer">Ian Dooley</p>
-          </blockquote>
-        </div>
-
-        <button class="btn btn--right">
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            class="icon"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke="currentColor"
-          >
-            <path
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              stroke-width="2"
-              d="M9 5l7 7-7 7"
-            />
-          </svg>
-        </button>
-        <div class="buttons">
-          <div></div>
-          <div></div>
-          <div></div>
         </div>
       </section>
     </main>

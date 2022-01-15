@@ -31,7 +31,6 @@ text: #343a40
 html {
   font-size: 62.5%;
   overflow-x: hidden;
-  scroll-behavior: smooth;
 }
 
 body {
@@ -96,7 +95,7 @@ body {
   grid-template-columns: 1fr 2fr;
   /* grid-template-rows: 1fr 1fr; */
   column-gap: 5rem;
-  margin-bottom: 5.2rem;
+  margin-bottom: 7.2rem;
 }
 
 .hero-title {
@@ -206,7 +205,8 @@ body {
 
 /*******Why Us Section*****/
 .why-us {
-  margin-bottom: 4.4rem;
+  margin-bottom: 7.2rem;
+  border-top: 1px solid rgba(0, 0, 0, 0.082);
 }
 .why-us-main-header {
   display: flex;
@@ -216,6 +216,7 @@ body {
   color: #e8590c;
   justify-content: center;
   margin-bottom: 1.8rem;
+  margin-top: 3rem;
   /* margin-left: 8rem; */
 }
 
@@ -330,12 +331,20 @@ body {
   justify-content: center;
   letter-spacing: 0.9px;
   text-transform: uppercase;
-  margin-left: 5.2rem;
+  margin-left: 5rem;
+}
+
+.partners-section-header-text {
+  display: flex;
+  justify-content: center;
+  font-size: 4.4rem;
+  letter-spacing: 0.4px;
 }
 .testimonials-container {
-  background-color: #e8590c;
+  background-color: #ff922b;
   color: #fff;
-  width: 800px;
+  max-width: 800px;
+  padding-top: 365px;
   position: relative;
   margin: 80px auto;
   border-radius: 10px;
@@ -347,6 +356,10 @@ body {
   gap: 3.2rem;
   align-items: center;
   padding-left: 2.4rem;
+
+  /* position: absolute;
+  left: 0;
+  top: 0; */
 }
 
 .btn {
@@ -355,6 +368,7 @@ body {
   align-self: center;
   cursor: pointer;
   background-color: #dee2e6;
+  position: absolute;
 }
 
 .btn:hover {
@@ -363,10 +377,14 @@ body {
 
 .btn--right {
   transform: translateX(50%);
+  top: 50%;
+  right: 0%;
 }
 
 .btn--left {
   transform: translateX(-50%);
+  top: 50%;
+  left: 0%;
 }
 
 .icon {
@@ -380,17 +398,22 @@ body {
   border-radius: 10px;
   transform: scale(1.1);
   box-shadow: 0px 12px 10px rgba(0, 0, 0, 0.247);
+  left: 7%;
+  position: absolute;
 }
 
 .testimonal-blockquote {
   color: #fff;
   line-height: 1.1;
+  margin-left: 33rem;
+  margin-top: 10rem;
 }
 
 .testimonial-text {
   font-size: 2.4rem;
   justify-items: center;
   display: inline-block;
+  align-items: center;
   padding-left: 2rem;
 }
 
@@ -399,5 +422,37 @@ body {
   opacity: 0.5;
   display: inline-block;
   padding: 2rem;
+}
+.buttons {
+  position: absolute;
+  display: flex;
+  left: 50%;
+  bottom: 0;
+  transform: translate(50%, 100%);
+  gap: 1rem;
+}
+.active {
+  background-color: #fd7d14;
+}
+.circle-btn {
+  height: 10px;
+  width: 10px;
+  border-radius: 100px;
+  margin-top: 1.8rem;
+  border: 2px solid #f76707;
+  cursor: pointer;
+  transition: all 0.4s;
+}
+
+.circle-btn:hover {
+  background-color: #fd7e14;
+}
+
+.testimonial-1,
+.testimonial-2,
+.testimonial-3 {
+  position: absolute;
+  left: 0;
+  top: 0;
 }
 /*****COMPONENT STYLES*****/
