@@ -17,7 +17,8 @@
     <link rel="icon" href="imgs/icon.png" type="image/x-icon" />
     <link rel="stylesheet" href="style.css" />
     <script defer src="https://unpkg.com/phosphor-icons"></script>
-    <script defer src="script.js"></script>
+    <script defer type="module" src="controller.js"></script>
+    <script defer type="module" src="script.js"></script>
   </head>
   <body class="container">
     <!--Title and navbar-->
@@ -37,7 +38,7 @@
             <a href="#why-us-section" class="navigation-link">Why Us?</a>
           </li>
           <li class="navigation-item">
-            <a href="" class="navigation-link">Order</a>
+            <a href="#order-section" class="navigation-link">Order</a>
           </li>
           <li class="navigation-item">
             <a href="" class="navigation-link">Contact Us</a>
@@ -162,6 +163,94 @@
             Speed is important but so is quality. We promise you that every bite
             will taste ecstatic
           </p>
+        </div>
+      </section>
+
+      <!--Menu Search section-->
+      <section class="menu-search" id="order-section">
+        <h2 class="menu-search-header-text">Order Now</h2>
+        <h3 class="menu-search-second-header">
+          More Than a 1000 Dishes Await You
+        </h3>
+        <div class="menu-search-box">
+          <div class="menu-search-header">
+            <form class="menu-search-form">
+              <input
+                type="text"
+                name="search-food"
+                id="search-food"
+                placeholder="Search for over 1000 Dishes..."
+                class="input-item"
+              />
+              <button type="button" class="btn-search">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 256 256"
+                  class="search-icon"
+                >
+                  <rect width="256" height="256" fill="none"></rect>
+                  <circle
+                    cx="116"
+                    cy="116"
+                    r="84"
+                    fill="none"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="24"
+                  ></circle>
+                  <line
+                    x1="175.4"
+                    y1="175.4"
+                    x2="224"
+                    y2="224"
+                    fill="none"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="24"
+                  ></line>
+                </svg>
+                Search
+              </button>
+            </form>
+            <div class="btn-extras">
+              <button type="button" class="btn-extra add-comments">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 256 256"
+                  class="svg-extra"
+                >
+                  <rect width="256" height="256" fill="none"></rect>
+                  <path
+                    d="M149.7,195.9l-14.8,24.7a8.1,8.1,0,0,1-13.8,0l-14.8-24.7a7.9,7.9,0,0,0-6.8-3.9H40a8,8,0,0,1-8-8V56a8,8,0,0,1,8-8H216a8,8,0,0,1,8,8V184a8,8,0,0,1-8,8H156.5A7.9,7.9,0,0,0,149.7,195.9Z"
+                    fill="none"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="24"
+                  ></path>
+                </svg>
+                Add Comments
+              </button>
+              <button type="button" class="btn-extra bookmark-item">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 256 256"
+                  class="svg-extra"
+                >
+                  <rect width="256" height="256" fill="none"></rect>
+                  <path
+                    d="M192,224l-64-40L64,224V48a8,8,0,0,1,8-8H184a8,8,0,0,1,8,8Z"
+                    fill="none"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="24"
+                  ></path>
+                </svg>
+                Bookmark
+              </button>
+            </div>
+          </div>
+          <div class="aside"></div>
+          <div class="searched-item"></div>
         </div>
       </section>
 
@@ -304,26 +393,89 @@
             <ul class="footer-list socials-list">
               <li class="footer-item">
                 <a href="" class="socials-link"
-                  ><ion-icon
-                    name="logo-instagram"
+                  ><svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 256 256"
                     class="socials-logo"
-                  ></ion-icon>
+                  >
+                    <rect width="256" height="256" fill="none"></rect>
+                    <circle
+                      cx="128"
+                      cy="128"
+                      r="34"
+                      fill="none"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="24"
+                    ></circle>
+                    <rect
+                      x="32"
+                      y="32"
+                      width="192"
+                      height="192"
+                      rx="48"
+                      fill="none"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="24"
+                    ></rect>
+                    <circle cx="180" cy="76" r="16"></circle>
+                  </svg>
                 </a>
               </li>
               <li class="footer-item">
                 <a href="" class="socials-link"
-                  ><ion-icon
-                    name="logo-facebook"
+                  ><svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 256 256"
                     class="socials-logo"
-                  ></ion-icon>
+                  >
+                    <rect width="256" height="256" fill="none"></rect>
+                    <circle
+                      cx="128"
+                      cy="128"
+                      r="96"
+                      fill="none"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="24"
+                    ></circle>
+                    <path
+                      d="M168,88H152a23.9,23.9,0,0,0-24,24V224"
+                      fill="none"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="24"
+                    ></path>
+                    <line
+                      x1="96"
+                      y1="144"
+                      x2="160"
+                      y2="144"
+                      fill="none"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="24"
+                    ></line>
+                  </svg>
                 </a>
               </li>
               <li class="footer-item">
                 <a href="" class="socials-link"
-                  ><ion-icon
-                    name="logo-twitter"
+                  ><svg
+                    xmlns="http://www.w3.org/2000/svg"
                     class="socials-logo"
-                  ></ion-icon>
+                    viewBox="0 0 256 256"
+                  >
+                    <rect width="256" height="256" fill="none"></rect>
+                    <path
+                      d="M128,88c0-22,18.5-40.3,40.5-40a40,40,0,0,1,36.2,24H240l-32.3,32.3A127.9,127.9,0,0,1,80,224c-32,0-40-12-40-12s32-12,48-36c0,0-64-32-48-120,0,0,40,40,88,48Z"
+                      fill="none"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="24"
+                    ></path>
+                  </svg>
                 </a>
               </li>
             </ul>

@@ -12,7 +12,7 @@ const year = document.querySelector(".year");
 
 testimonials.forEach((element, index) => {
   //Move them off the screen
-  element.style.transform = `translateX(${140 * index}%)`;
+  element.style.transform = `translateX(${170 * index}%)`;
 });
 
 //Button right functionality
@@ -30,7 +30,7 @@ btnRight.addEventListener("click", function () {
     //Move them off the screen
     //Subtract the currentSlide from the index to move the slide at '0' to '-1' and slide at '1' to '0'
     //This way we can get the next slide as the current and the current slide as the previous
-    element.style.transform = `translateX(${140 * (index - currentSlide)}%)`;
+    element.style.transform = `translateX(${170 * (index - currentSlide)}%)`;
     activateButton(currentSlide);
   });
 });
@@ -50,7 +50,7 @@ btnLeft.addEventListener("click", function () {
     //Move them off the screen
     //Subtract the currentSlide from the index to move the slide at '0' to '-1' and slide at '1' to '0'
     //This way we can get the next slide as the current and the current slide as the previous
-    element.style.transform = `translateX(${140 * (index - currentSlide)}%)`;
+    element.style.transform = `translateX(${170 * (index - currentSlide)}%)`;
     activateButton(currentSlide);
   });
 });
@@ -72,7 +72,7 @@ document.addEventListener("keydown", function (e) {
       //Move them off the screen
       //Subtract the currentSlide from the index to move the slide at '0' to '-1' and slide at '1' to '0'
       //This way we can get the next slide as the current and the current slide as the previous
-      element.style.transform = `translateX(${140 * (index - currentSlide)}%)`;
+      element.style.transform = `translateX(${170 * (index - currentSlide)}%)`;
       activateButton(currentSlide);
     });
   }
@@ -91,7 +91,7 @@ document.addEventListener("keydown", function (e) {
       //Move them off the screen
       //Subtract the currentSlide from the index to move the slide at '0' to '-1' and slide at '1' to '0'
       //This way we can get the next slide as the current and the current slide as the previous
-      element.style.transform = `translateX(${140 * (index - currentSlide)}%)`;
+      element.style.transform = `translateX(${170 * (index - currentSlide)}%)`;
       activateButton(currentSlide);
     });
   }
@@ -107,7 +107,7 @@ buttonContainer.addEventListener("click", function (e) {
       //Move them off the screen
       //Subtract the currentSlide from the index to move the slide at '0' to '-1' and slide at '1' to '0'
       //This way we can get the next slide as the current and the current slide as the previous
-      element.style.transform = `translateX(${140 * (index - slide)}%)`;
+      element.style.transform = `translateX(${170 * (index - slide)}%)`;
       activateButton(currentSlide);
     });
   }
