@@ -457,5 +457,133 @@ body {
 }
 
 /*****FOOTER STYLES*******/
+.footer {
+  padding: 3rem 7.2rem;
+  background-image: linear-gradient(to bottom right, #ffc078, #ffa94d);
+  border-radius: 15px;
+  margin-bottom: 2rem;
+}
+
+.footer-section {
+  display: flex;
+  align-items: center;
+}
+.footer-grid {
+  display: grid;
+  grid-template-columns: 1.5fr 1.5fr 1fr 1fr 1fr;
+  column-gap: 3.2rem;
+}
+
+.footer-category {
+  display: flex;
+  flex-direction: column;
+  align-content: center;
+  gap: 2rem;
+}
+
+/***First column***/
+.footer-logo {
+  height: 5.2rem;
+}
+
+.logo-and-title {
+  display: flex;
+  align-items: center;
+  gap: 1.4rem;
+  margin-bottom: 2rem;
+}
+.footer-logo-title {
+  font-family: Shadows Into Light;
+}
+
+.socials-list {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 1.4rem;
+}
+
+.socials-link:link,
+.socials-link:visited {
+  color: #fd7e14;
+  cursor: pointer;
+  transition: all 0.6s;
+}
+
+.socials-link:hover,
+.socials-link:active {
+  color: #f76707;
+}
+
+.socials-logo {
+  font-size: 1.8rem;
+}
+
+.copyright {
+  font-size: 1.2rem;
+}
+
+/***Second Column***/
+.contact {
+  line-height: 1.5;
+  margin-bottom: 2rem;
+}
+.contact-form {
+  display: flex;
+  gap: 0.5px;
+}
+
+.contact-info:link,
+.contact-info:visited {
+  text-decoration: none;
+  color: #000;
+}
+
+.contact-info:hover,
+.contact-info:active {
+  text-decoration: underline;
+}
+
+.email-btn {
+  border: none;
+  cursor: pointer;
+}
+
+.btn-icon {
+  font-size: 1.8rem;
+  border: none;
+}
+
+/****Common footer styles****/
+.footer-contact .contact,
+.footer-about ul,
+.footer-company ul,
+.footer-support ul {
+  display: flex;
+  flex-direction: column;
+  gap: 2.4rem;
+}
+
+.footer-list {
+  list-style: none;
+}
+
+.footer-title {
+  font-size: 1.6rem;
+}
+
+.footer-item {
+  font-size: 1.2rem;
+}
+
+.footer-pointer:link,
+.footer-pointer:visited {
+  transition: all 0.7s;
+}
+
+.footer-pointer:hover,
+.footer-pointer:active {
+  color: #fff;
+  cursor: pointer;
+}
 
 /*****COMPONENT STYLES*****/

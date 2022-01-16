@@ -8,6 +8,7 @@ let currentSlide = 0;
 const maxSlides = testimonials.length;
 const buttonContainer = document.querySelector(".buttons");
 const circleButtons = document.querySelectorAll(".circle-btn");
+const year = document.querySelector(".year");
 
 testimonials.forEach((element, index) => {
   //Move them off the screen
@@ -121,3 +122,8 @@ const activateButton = function (slide) {
     .querySelector(`.circle-btn[data-slide="${slide}"]`)
     .classList.add("active");
 };
+
+//Getting the current year for the copyright text
+const currDate = new Date();
+const currYear = currDate.getFullYear();
+year.textContent = currYear;

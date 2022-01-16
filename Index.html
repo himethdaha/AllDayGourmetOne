@@ -16,6 +16,7 @@
     <title>AllDayGourmet-Landing Page</title>
     <link rel="icon" href="imgs/icon.png" type="image/x-icon" />
     <link rel="stylesheet" href="style.css" />
+    <script defer src="https://unpkg.com/phosphor-icons"></script>
     <script defer src="script.js"></script>
   </head>
   <body class="container">
@@ -290,35 +291,56 @@
     <footer class="footer">
       <section class="footer-section">
         <div class="footer-grid">
-          <div class="footer-socials">
-            <a href="#" class="footer-logo"
-              ><img
-                src="imgs/title-logo.png"
-                alt="Footer logo. Fork and spoon inside a circle with an orange border"
-            /></a>
-            <h3 class="footer-logo-title">AllDayGourmet</h3>
-            <p class="footer-socials-logo">
-              <a href="" class="socials-link"
-                ><ion-icon name="logo-instagram"></ion-icon>
-              </a>
-              <a href="" class="socials-link"
-                ><ion-icon name="logo-facebook"></ion-icon>
-              </a>
-              <a href="" class="socials-link"
-                ><ion-icon name="logo-twitter"></ion-icon>
-              </a>
-              <p class="copyright">
-                Copyright &copy; <span class="year">3000</span> by AllDayGourmet. All rights reserved
-              </p>
+          <div class="footer-socials footer-category">
+            <div class="logo-and-title">
+              <a href="#" class="footer-logo-link"
+                ><img
+                  src="imgs/title-logo.png"
+                  alt="Footer logo. Fork and spoon inside a circle with an orange border"
+                  class="footer-logo"
+              /></a>
+              <h3 class="footer-title footer-logo-title">AllDayGourmet</h3>
+            </div>
+            <ul class="footer-list socials-list">
+              <li class="footer-item">
+                <a href="" class="socials-link"
+                  ><ion-icon
+                    name="logo-instagram"
+                    class="socials-logo"
+                  ></ion-icon>
+                </a>
+              </li>
+              <li class="footer-item">
+                <a href="" class="socials-link"
+                  ><ion-icon
+                    name="logo-facebook"
+                    class="socials-logo"
+                  ></ion-icon>
+                </a>
+              </li>
+              <li class="footer-item">
+                <a href="" class="socials-link"
+                  ><ion-icon
+                    name="logo-twitter"
+                    class="socials-logo"
+                  ></ion-icon>
+                </a>
+              </li>
+            </ul>
+            <p class="copyright">
+              Copyright &copy; <span class="year"></span> by AllDayGourmet. All
+              rights reserved
             </p>
           </div>
-          <div class="footer-contact">
-            <h3 class="footer-contact-title">Contact Us</h3>
+          <div class="footer-contact footer-category">
+            <h3 class="footer-title">Contact Us</h3>
             <address class="contact">
               <p class="addr">3095 Woolwick Drive, Toronto, Ontario M1H1A8</p>
               <p>
-                <a href="tel:+1(647)449-0532">+1(647)449-0532</a><br />
-                <a href="mailto:alldaygourmet@gmail.com"
+                <a href="tel:+1(647)449-0532" class="contact-info"
+                  >+1(647)449-0532</a
+                ><br />
+                <a href="mailto:alldaygourmet@gmail.com" class="contact-info"
                   >alldaygourmet@gmail.com</a
                 >
               </p>
@@ -331,13 +353,13 @@
                 placeholder="Email Address"
                 aria-label="Enter Email Address to get in touch"
               />
-              <button type="button">
-                <i class="fa-solid fa-paper-plane-top send-icon"></i>
+              <button type="button" class="email-btn">
+                <i class="ph-paper-plane-right btn-icon"></i>
               </button>
             </form>
           </div>
-          <div class="footer-about">
-            <h3 class="footer-about-title">About Us</h3>
+          <div class="footer-about footer-category">
+            <h3 class="footer-title">About Us</h3>
             <ul class="footer-list">
               <li class="footer-item">
                 <a class="footer-pointer">About Us</a>
@@ -349,8 +371,8 @@
               <li class="footer-item"><a class="footer-pointer">Menu</a></li>
             </ul>
           </div>
-          <div class="footer-company">
-            <h3 class="footer-company-title">Company</h3>
+          <div class="footer-company footer-category">
+            <h3 class="footer-title">Company</h3>
             <ul class="footer-list">
               <li class="footer-item">
                 <a class="footer-pointer">Why AllDayGourmet?</a>
@@ -362,8 +384,8 @@
               </li>
             </ul>
           </div>
-          <div class="footer-support">
-            <h3 class="footer-support-title">Support</h3>
+          <div class="footer-support footer-category">
+            <h3 class="footer-title">Support</h3>
             <ul class="footer-list">
               <li class="footer-item"><a class="footer-pointer">Account</a></li>
               <li class="footer-item">
