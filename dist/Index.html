@@ -124,8 +124,11 @@
         <h3 class="menu-search-second-header">
           More Than a 1000 Dishes Await You
         </h3>
+        <!--Entire big container box-->
         <div class="menu-search-box">
+          <!--Top part containing the search form and the add comments and bookmarks-->
           <div class="menu-search-header">
+            <!--The search form-->
             <form class="menu-search-form">
               <input type="text" name="search-food" id="search-food" placeholder="Search for over 1000 Dishes..." class="input-item">
               <button type="button" class="btn-search">
@@ -137,6 +140,7 @@
                 Search
               </button>
             </form>
+            <!--Buttons for comments and bookmarks-->
             <div class="btn-extras">
               <button type="button" class="btn-extra add-comments">
                 <svg xmlns="http://www.w3.org/2000/svg" viewbox="0 0 256 256" class="svg-extra">
@@ -150,12 +154,63 @@
                   <rect width="256" height="256" fill="none"></rect>
                   <path d="M192,224l-64-40L64,224V48a8,8,0,0,1,8-8H184a8,8,0,0,1,8,8Z" fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="24"></path>
                 </svg>
-                Bookmark
+                Bookmarks
               </button>
             </div>
           </div>
-          <div class="aside"></div>
-          <div class="searched-item"></div>
+          <!--Grid for aside and searched results-->
+          <div class="main-area-grid">
+            <!--aside-->
+            <div class="aside"></div>
+            <!--Big container for the searched result-->
+            <div class="searched-item">
+              <!--Section containing the food image and title-->
+              <figure class="figure-section">
+                <img src="http://forkify-api.herokuapp.com/images/FlatBread21of1a180.jpg" alt="" class="food-image">
+                <h1 class="food-title">
+                  <span class="food-title-span">Spicy Chicken and Pepper Jack Pizza</span>
+                </h1>
+              </figure>
+              <!--Section for the cooking details such as time and servings-->
+              <div class="cooking-details">
+                <div class="cooking-time">
+                  <svg xmlns="http://www.w3.org/2000/svg" viewbox="0 0 256 256" class="menu-svg">
+                    <rect width="256" height="256" fill="none"></rect>
+                    <circle cx="128" cy="128" r="96" fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="24"></circle>
+                    <polyline points="128 72 128 128 184 128" fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="24"></polyline>
+                  </svg>
+                  <span class="cooking-info data-time">45</span>
+                  <span class="cooking-info-time-text">Minitues</span>
+                </div>
+                <div class="quantity">
+                  <svg xmlns="http://www.w3.org/2000/svg" viewbox="0 0 256 256" class="menu-svg">
+                    <rect width="256" height="256" fill="none"></rect>
+                    <circle cx="88" cy="108" r="52" fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="24"></circle>
+                    <path d="M155.4,57.9A54.5,54.5,0,0,1,169.5,56a52,52,0,0,1,0,104" fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="24"></path>
+                    <path d="M16,197.4a88,88,0,0,1,144,0" fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="24"></path>
+                    <path d="M169.5,160a87.9,87.9,0,0,1,72,37.4" fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="24"></path>
+                  </svg>
+                  <span class="servings-number">4</span>
+                  <span class="servings-number-text">Servings</span>
+                  <div class="quantity-buttons">
+                    <!--Buttons to reduce or increase servings-->
+                      <!--button to reduce-->
+                    <button class="quantity-button btn-reduce data-update-to=" 3"="" "="">
+                      <svg xmlns="http://www.w3.org/2000/svg" viewbox="0 0 256 256" class="servings-icon"><rect width="256" height="256" fill="none"></rect><circle cx="128" cy="128" r="96" fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="24"></circle><line x1="88" y1="128" x2="168" y2="128" fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="24"></line></svg>
+                    </button>
+                      <!--button to increase-->
+                    <button class="quantity-button btn-increase data-update-to=" 5"="" "="">
+                      <svg xmlns="http://www.w3.org/2000/svg" viewbox="0 0 256 256" class="servings-icon"><rect width="256" height="256" fill="none"></rect><circle cx="128" cy="128" r="96" fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="24"></circle><line x1="88" y1="128" x2="168" y2="128" fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="24"></line><line x1="128" y1="88" x2="128" y2="168" fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="24"></line></svg>
+                    </button>
+                  </div>
+                  <!--Button to add the dish as a bookmark-->
+                  <button class="btn-dish-bookmark">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewbox="0 0 256 256" class="bookmark-dish-icon"><rect width="256" height="256" fill="none"></rect><path d="M192,224l-64-40L64,224V48a8,8,0,0,1,8-8H184a8,8,0,0,1,8,8Z" fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="24"></path></svg>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </section>
 

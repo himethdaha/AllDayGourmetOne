@@ -320,7 +320,7 @@ body {
 
 .menu-search-box {
   background-image: linear-gradient(to right bottom, #fbdb89, #f48982);
-  height: 30rem;
+  height: 100%;
   margin-bottom: 5.2rem;
 }
 .menu-search-header {
@@ -417,6 +417,57 @@ body {
   background-color: #f9f5f3;
   color: #343a40;
   line-height: 1.5;
+}
+
+.main-area-grid {
+  display: grid;
+  grid-template-columns: 1fr 2fr;
+  column-gap: 1.6rem;
+}
+
+.figure-section {
+  height: 32rem;
+  transform-origin: top;
+  position: relative;
+}
+
+.figure-section:before,
+.food-image {
+  display: block;
+  height: 100%;
+  width: 100%;
+}
+
+.figure-section:before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+.food-image {
+  object-fit: cover;
+}
+
+.food-title {
+  width: 50%;
+  font-weight: 700;
+  text-transform: uppercase;
+  font-size: 3.2rem;
+  position: absolute;
+  color: #fff;
+  left: 50%;
+  bottom: 0;
+  transform: translate(-50%, 20%) skewY(-6deg);
+  text-align: center;
+  line-height: 2;
+}
+
+.food-title-span {
+  box-decoration-break: clone;
+  -webkit-box-decoration-break: clone;
+  padding: 1.4rem 2.2rem;
+  background-image: linear-gradient(to right bottom, #e2c57c, #ca6e67);
 }
 /*******SEARCH FOR RECEIPIES SECTION*********/
 /****Partners section***/
