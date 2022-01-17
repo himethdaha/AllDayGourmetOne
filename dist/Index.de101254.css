@@ -303,7 +303,10 @@ body {
 }
 
 /*******SEARCH FOR RECEIPIES SECTION*********/
-
+.menu-search {
+  margin-bottom: 14rem;
+  height: 110rem;
+}
 .menu-search-header-text {
   display: flex;
   text-transform: uppercase;
@@ -513,9 +516,31 @@ body {
 }
 
 .searched-item {
-  background-color: #f9f5f3;
+  /* background-color: #f9f5f3; */
   color: #343a40;
   line-height: 1.5;
+}
+
+.message {
+  display: flex;
+  align-items: center;
+  padding: 5rem 4rem;
+  max-width: 40rem;
+  margin: 0 auto;
+  gap: 1.2rem;
+  justify-content: center;
+}
+
+.message-icon {
+  height: 3rem;
+  width: 3rem;
+  stroke: #fff;
+}
+
+.message-text {
+  font-size: 1.8rem;
+  font-weight: 500;
+  color: #fff;
 }
 
 .main-area-grid {
@@ -574,7 +599,7 @@ body {
   display: flex;
   align-items: center;
   padding: 7.5rem 8rem 2rem;
-  background-color: #f2efee;
+  background-color: f2efee;
   margin-bottom: 2rem;
 }
 
@@ -660,7 +685,7 @@ body {
   flex-direction: column;
   align-items: center;
   background-color: #f2efee;
-  padding: 4rem 8rem;
+  padding: 4rem 1rem;
 }
 
 .ingredients-header {
@@ -674,7 +699,7 @@ body {
 .ingredient-list {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  gap: 2.4rem 3.5rem;
+  gap: 2.5rem 4rem;
   list-style: none;
   line-height: 1.5;
 }
@@ -682,6 +707,11 @@ body {
 .ingredient {
   display: flex;
   align-items: center;
+}
+
+.receipe-ingredient {
+  line-height: 1.5;
+  font-size: 1.6rem;
 }
 
 .ingredient-icon {
@@ -698,7 +728,7 @@ body {
   font-size: 1.6rem;
 }
 
-.receipe-ingredient-text {
+.receipe-ingredient-unit {
   font-size: 1.6rem;
 }
 
@@ -717,6 +747,7 @@ body {
   text-transform: uppercase;
   cursor: pointer;
   transition: all 0.3s;
+  margin-top: 2rem;
 }
 
 .btn-order:hover {
