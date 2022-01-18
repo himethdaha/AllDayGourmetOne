@@ -1,5 +1,7 @@
 "use strict";
 import { async } from "regenerator-runtime";
+import { API_URL } from "./config.js";
+import { validateAndGetJson } from "./helpers.js";
 //////////////////////////////////// BUSINESS LOGIC////////////////////////////////////
 
 //State object
@@ -12,17 +14,8 @@ export const state = {
 //This function will change the state object
 export const loadReceipe = async function (id) {
   try {
-    // 1) Fetch recipe from url
-    const resp = await fetch(
-      `https://forkify-api.herokuapp.com/api/v2/recipes/${id}`
-    );
-    //Assign the json object to a variable
-    const data = await resp.json();
-    console.log(data);
-    //validate
-    if (!resp.ok) {
-      throw new Error(`${data.message} , ${resp.status}`);
-    }
+    // 1) Fetch recipe from url and validate it
+    const data = await validateAndGetJson(`${API_URL}/${id}`);
     //Get the meal object into my receipe variable
     let receipe = data.data.recipe;
     console.log(receipe);
@@ -37,6 +30,6 @@ export const loadReceipe = async function (id) {
       ingredients: receipe.ingredients,
     };
   } catch (error) {
-    alert(error);
+    console.error(`☠️☠️☠️ ${error} ☠️☠️☠️`);
   }
 };

@@ -533,14 +533,6 @@ var _stable = require("core-js/stable");
 var _runtime = require("regenerator-runtime/runtime");
 "use strict";
 const parentElement = document.querySelector(".searched-item");
-console.log(parentElement);
-const timeout = function(s) {
-    return new Promise(function(_, reject) {
-        setTimeout(function() {
-            reject(new Error(`Request took too long. Timeout after ${s} seconds`));
-        }, s * 1000);
-    });
-};
 //Function to get a receipe
 const controlReceipies = async function() {
     try {
@@ -564,10 +556,13 @@ const controlReceipies = async function() {
         console.log(error);
     }
 };
-//Event listener for the side bar items
-window.addEventListener("hashchange", controlReceipies);
-//Event listener for when the page is loaded with an id in the url
-window.addEventListener("load", controlReceipies);
+//Initialization method
+//Method which executes everything once the page is loaded
+//Publisher Subscriber Pattern
+const init = function() {
+    _receipeViewJsDefault.default.addHandlerRender(controlReceipies);
+};
+init();
 
 },{"core-js/stable":"95FYz","regenerator-runtime/runtime":"1EBPE","./model.js":"1pVJj","regenerator-runtime":"1EBPE","./views/receipeView.js":"ewyyT","@parcel/transformer-js/src/esmodule-helpers.js":"ciiiV"}],"95FYz":[function(require,module,exports) {
 require('../modules/es.symbol');
@@ -14914,6 +14909,8 @@ parcelHelpers.export(exports, "state", ()=>state
 parcelHelpers.export(exports, "loadReceipe", ()=>loadReceipe
 );
 var _regeneratorRuntime = require("regenerator-runtime");
+var _configJs = require("./config.js");
+var _helpersJs = require("./helpers.js");
 "use strict";
 const state = {
     receipe: {
@@ -14921,13 +14918,8 @@ const state = {
 };
 const loadReceipe = async function(id) {
     try {
-        // 1) Fetch recipe from url
-        const resp = await fetch(`https://forkify-api.herokuapp.com/api/v2/recipes/${id}`);
-        //Assign the json object to a variable
-        const data = await resp.json();
-        console.log(data);
-        //validate
-        if (!resp.ok) throw new Error(`${data.message} , ${resp.status}`);
+        // 1) Fetch recipe from url and validate it
+        const data = await _helpersJs.validateAndGetJson(`${_configJs.API_URL}/${id}`);
         //Get the meal object into my receipe variable
         let receipe = data.data.recipe;
         console.log(receipe);
@@ -14941,11 +14933,11 @@ const loadReceipe = async function(id) {
             ingredients: receipe.ingredients
         };
     } catch (error) {
-        alert(error);
+        console.error(`☠️☠️☠️ ${error} ☠️☠️☠️`);
     }
 };
 
-},{"regenerator-runtime":"1EBPE","@parcel/transformer-js/src/esmodule-helpers.js":"ciiiV"}],"ciiiV":[function(require,module,exports) {
+},{"regenerator-runtime":"1EBPE","@parcel/transformer-js/src/esmodule-helpers.js":"ciiiV","./config.js":"6V52N","./helpers.js":"9RX9R"}],"ciiiV":[function(require,module,exports) {
 exports.interopDefault = function(a) {
     return a && a.__esModule ? a : {
         default: a
@@ -14975,7 +14967,52 @@ exports.export = function(dest, destName, get) {
     });
 };
 
-},{}],"ewyyT":[function(require,module,exports) {
+},{}],"6V52N":[function(require,module,exports) {
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+parcelHelpers.export(exports, "API_URL", ()=>API_URL
+);
+parcelHelpers.export(exports, "TIMEOUT_SECS", ()=>TIMEOUT_SECS
+);
+"use strict";
+const API_URL = "https://forkify-api.herokuapp.com/api/v2/recipes";
+const TIMEOUT_SECS = 10;
+
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"ciiiV"}],"9RX9R":[function(require,module,exports) {
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+parcelHelpers.export(exports, "validateAndGetJson", ()=>validateAndGetJson
+);
+//File containing all common functions
+var _regeneratorRuntime = require("regenerator-runtime");
+var _configJs = require("./config.js");
+"use strict";
+//Timer function for slow requests
+const timeout = function(s) {
+    return new Promise(function(_, reject) {
+        setTimeout(function() {
+            reject(new Error(`Request took too long. Timeout after ${s} seconds`));
+        }, s * 1000);
+    });
+};
+const validateAndGetJson = async function(url) {
+    try {
+        // 1) Fetch recipe from url
+        const resp = await Promise.race([
+            fetch(url),
+            timeout(_configJs.TIMEOUT_SECS)
+        ]);
+        //Assign the json object to a variable
+        const data = await resp.json();
+        //validate
+        if (!resp.ok) throw new Error(`${data.message} , ${resp.status}`);
+        return data;
+    } catch (error) {
+        throw error;
+    }
+};
+
+},{"regenerator-runtime":"1EBPE","@parcel/transformer-js/src/esmodule-helpers.js":"ciiiV","./config.js":"6V52N"}],"ewyyT":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 var _fractional = require("fractional");
@@ -14998,6 +15035,17 @@ class ReceipeView {
     //Method to clear the parent container of the markup
      #clear() {
         this.#parentElement.innerHTML = "";
+    }
+    //Method as the Publisher. Therefore, needs access to the subscriber (handler function)
+    //Rendering the receipe right in the beginning
+    //Needs to be public to call in the controller
+    addHandlerRender(handler) {
+        [
+            "hashchange",
+            "load"
+        ].forEach((ev)=>{
+            window.addEventListener(ev, handler);
+        });
     }
     //Private method to render the HTMLMarkup
      #generateMarkup() {

@@ -12,17 +12,9 @@ import "core-js/stable";
 import "regenerator-runtime/runtime";
 
 const parentElement = document.querySelector(".searched-item");
-console.log(parentElement);
-
-const timeout = function (s) {
-  return new Promise(function (_, reject) {
-    setTimeout(function () {
-      reject(new Error(`Request took too long. Timeout after ${s} seconds`));
-    }, s * 1000);
-  });
-};
 
 //Function to get a receipe
+//handler function in subscriber-publisher design pattern
 const controlReceipies = async function () {
   try {
     //Get the hash from the window url
@@ -48,7 +40,11 @@ const controlReceipies = async function () {
   }
 };
 
-//Event listener for the side bar items
-window.addEventListener("hashchange", controlReceipies);
-//Event listener for when the page is loaded with an id in the url
-window.addEventListener("load", controlReceipies);
+//Initialization method
+//Method which executes everything once the page is loaded
+//Publisher Subscriber Pattern
+const init = function () {
+  receipeView.addHandlerRender(controlReceipies);
+};
+
+init();

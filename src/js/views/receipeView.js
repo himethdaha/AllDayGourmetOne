@@ -23,6 +23,15 @@ class ReceipeView {
     this.#parentElement.innerHTML = "";
   }
 
+  //Method as the Publisher. Therefore, needs access to the subscriber (handler function)
+  //Rendering the receipe right in the beginning
+  //Needs to be public to call in the controller
+  addHandlerRender(handler) {
+    ["hashchange", "load"].forEach((ev) => {
+      window.addEventListener(ev, handler);
+    });
+  }
+
   //Private method to render the HTMLMarkup
   #generateMarkup() {
     return `
