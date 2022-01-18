@@ -543,6 +543,22 @@ body {
   color: #fff;
 }
 
+.error-message {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.error-icon {
+  height: 3.2rem;
+  stroke: #f03e3e;
+  /* margin-top: 2rem; */
+}
+.error-message-text {
+  font-size: 2rem;
+  font-weight: 600;
+  color: #f03e3e;
+}
+
 .main-area-grid {
   display: grid;
   grid-template-columns: 1fr 2fr;

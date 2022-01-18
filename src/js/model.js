@@ -30,6 +30,7 @@ export const loadReceipe = async function (id) {
       ingredients: receipe.ingredients,
     };
   } catch (error) {
-    console.error(`☠️☠️☠️ ${error} ☠️☠️☠️`);
+    //Throw error so the controller can catch it
+    throw error;
   }
 };

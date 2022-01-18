@@ -534,6 +534,7 @@ var _runtime = require("regenerator-runtime/runtime");
 "use strict";
 const parentElement = document.querySelector(".searched-item");
 //Function to get a receipe
+//handler function in subscriber-publisher design pattern
 const controlReceipies = async function() {
     try {
         //Get the hash from the window url
@@ -553,7 +554,9 @@ const controlReceipies = async function() {
         //Get all the data from step 1 and pass it into the render method
         _receipeViewJsDefault.default.render(_modelJs.state.receipe);
     } catch (error) {
-        console.log(error);
+        //Rendering the error
+        //No need to pass the error message, cos the receipeView should handle all things related to the UI
+        _receipeViewJsDefault.default.renderError();
     }
 };
 //Initialization method
@@ -14933,7 +14936,8 @@ const loadReceipe = async function(id) {
             ingredients: receipe.ingredients
         };
     } catch (error) {
-        console.error(`☠️☠️☠️ ${error} ☠️☠️☠️`);
+        //Throw error so the controller can catch it
+        throw error;
     }
 };
 
@@ -15008,6 +15012,7 @@ const validateAndGetJson = async function(url) {
         if (!resp.ok) throw new Error(`${data.message} , ${resp.status}`);
         return data;
     } catch (error) {
+        //Throw the error so the promise is rejected and the model can catch it
         throw error;
     }
 };
@@ -15024,6 +15029,7 @@ class ReceipeView {
     //Prierty to be inherted by other classes
     #parentElement = document.querySelector(".searched-item");
     #data;
+    #errorMessage = "Sorry, Could not find what you are looking for. Please try Again! 🥺";
     render(data) {
         //storing the data rendered by the controller in this property
         this.#data = data;
@@ -15046,6 +15052,19 @@ class ReceipeView {
         ].forEach((ev)=>{
             window.addEventListener(ev, handler);
         });
+    }
+    //Markup for error message
+    renderError(message = this.#errorMessage) {
+        const markup = `
+    <div class="error-message">
+    <div class="error-icon">
+      <svg xmlns="http://www.w3.org/2000/svg"  viewBox="0 0 256 256" class="error-icon"><rect width="256" height="256" fill="none"></rect><polyline points="128 240 154.3 200 104 200 130.3 160" fill="none"  stroke-linecap="round" stroke-linejoin="round" stroke-width="24"></polyline><path d="M88,92a68,68,0,1,1,68,68H76a44,44,0,0,1,0-88,42.5,42.5,0,0,1,14.3,2.4" fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="24"></path></svg>                
+    </div>
+    <span class="error-message-text">${message}</span>
+  </div>
+          `;
+        this.#clear();
+        this.#parentElement.insertAdjacentHTML("afterbegin", markup);
     }
     //Private method to render the HTMLMarkup
      #generateMarkup() {

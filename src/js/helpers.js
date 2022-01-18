@@ -25,6 +25,7 @@ export const validateAndGetJson = async function (url) {
 
     return data;
   } catch (error) {
+    //Throw the error so the promise is rejected and the model can catch it
     throw error;
   }
 };

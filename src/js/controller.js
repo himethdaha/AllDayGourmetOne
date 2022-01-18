@@ -36,7 +36,9 @@ const controlReceipies = async function () {
     //Get all the data from step 1 and pass it into the render method
     receipeView.render(model.state.receipe);
   } catch (error) {
-    console.log(error);
+    //Rendering the error
+    //No need to pass the error message, cos the receipeView should handle all things related to the UI
+    receipeView.renderError();
   }
 };
 
