@@ -78,3 +78,15 @@ export const getSearchResultsInPage = function (page = state.search.page) {
   //Returning all the results between start and end
   return state.search.results.slice(start, end);
 };
+
+//Function to update servings
+export const updateServings = function (newServings) {
+  //Loop through the recipies ingredients
+  state.receipe.ingredients.forEach((ing) => {
+    //For each ingredients quantity, change it based on the new servings portion
+    ing.quantity = (ing.quantity * newServings) / state.receipe.servings;
+  });
+
+  //Update the servings in the object
+  state.receipe.servings = newServings;
+};

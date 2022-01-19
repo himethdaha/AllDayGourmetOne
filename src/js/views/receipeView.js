@@ -19,6 +19,17 @@ class ReceipeView extends parentView {
     });
   }
 
+  //Method to listen for clicks in the quantity increase / decrease buttons
+  addHandlerServings(handler) {
+    //Adding the event listener to the parent cos we have 2 btns
+    this._parentElement.addEventListener("click", function (e) {
+      const click = e.target.closest(".quantity-button");
+      if (!click) return;
+      const updateServings = Number(click.dataset.updateTo);
+      if (updateServings > 0) handler(updateServings);
+    });
+  }
+
   //Private method to render the HTMLMarkup
   _generateMarkup() {
     return `
@@ -110,11 +121,15 @@ class ReceipeView extends parentView {
       <div class="quantity-buttons">
         <!--Buttons to reduce or increase servings-->
           <!--button to reduce-->
-        <button class="quantity-button btn-reduce" data-update-to="3">
+        <button class="quantity-button btn-reduce" data-update-to="${
+          this._data.servings - 1
+        }">
           <svg xmlns="http://www.w3.org/2000/svg"  viewBox="0 0 256 256" class="servings-icon"><rect width="256" height="256" fill="none"></rect><circle cx="128" cy="128" r="96" fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="24"></circle><line x1="88" y1="128" x2="168" y2="128" fill="none"  stroke-linecap="round" stroke-linejoin="round" stroke-width="24"></line></svg>
         </button>
           <!--button to increase-->
-        <button class="quantity-button btn-increase"  data-update-to="5" >
+        <button class="quantity-button btn-increase"  data-update-to="${
+          this._data.servings + 1
+        }" >
           <svg xmlns="http://www.w3.org/2000/svg"  viewBox="0 0 256 256" class="servings-icon"><rect width="256" height="256" fill="none"></rect><circle cx="128" cy="128" r="96" fill="none"  stroke-linecap="round" stroke-linejoin="round" stroke-width="24"></circle><line x1="88" y1="128" x2="168" y2="128" fill="none"  stroke-linecap="round" stroke-linejoin="round" stroke-width="24"></line><line x1="128" y1="88" x2="128" y2="168" fill="none"  stroke-linecap="round" stroke-linejoin="round" stroke-width="24"></line></svg>
         </button>
       </div>

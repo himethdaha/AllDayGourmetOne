@@ -83,11 +83,20 @@ const btnPagination = function (pageNo) {
   pagination.render(model.state.search);
 };
 
+//Controller function for updating the servings
+const controlServings = function (newServings) {
+  //Update servings in the model. Hence, the state
+  model.updateServings(newServings);
+  //Update the view
+  receipeView.render(model.state.receipe);
+};
+
 //Initialization method
 //Method which executes everything once the page is loaded
 //Publisher Subscriber Pattern
 const init = function () {
   receipeView.addHandlerRender(controlReceipies);
+  receipeView.addHandlerServings(controlServings);
   searchResultsView.addHandlerSearch(getAllReceipies);
   pagination.addhandlerPagination(btnPagination);
 };

@@ -595,11 +595,19 @@ const btnPagination = function(pageNo) {
     //Render the pagination buttons
     _paginationJsDefault.default.render(_modelJs.state.search);
 };
+//Controller function for updating the servings
+const controlServings = function(newServings) {
+    //Update servings in the model. Hence, the state
+    _modelJs.updateServings(newServings);
+    //Update the view
+    _receipeViewJsDefault.default.render(_modelJs.state.receipe);
+};
 //Initialization method
 //Method which executes everything once the page is loaded
 //Publisher Subscriber Pattern
 const init = function() {
     _receipeViewJsDefault.default.addHandlerRender(controlReceipies);
+    _receipeViewJsDefault.default.addHandlerServings(controlServings);
     _searchResultsViewJsDefault.default.addHandlerSearch(getAllReceipies);
     _paginationJsDefault.default.addhandlerPagination(btnPagination);
 };
@@ -1666,6 +1674,8 @@ parcelHelpers.export(exports, "loadAllReceipies", ()=>loadAllReceipies
 );
 parcelHelpers.export(exports, "getSearchResultsInPage", ()=>getSearchResultsInPage
 );
+parcelHelpers.export(exports, "updateServings", ()=>updateServings
+);
 var _regeneratorRuntime = require("regenerator-runtime");
 var _configJs = require("./config.js");
 var _helpersJs = require("./helpers.js");
@@ -1734,6 +1744,15 @@ const getSearchResultsInPage = function(page = state.search.page) {
     const end = page * state.search.resultsPerPage;
     //Returning all the results between start and end
     return state.search.results.slice(start, end);
+};
+const updateServings = function(newServings) {
+    //Loop through the recipies ingredients
+    state.receipe.ingredients.forEach((ing)=>{
+        //For each ingredients quantity, change it based on the new servings portion
+        ing.quantity = ing.quantity * newServings / state.receipe.servings;
+    });
+    //Update the servings in the object
+    state.receipe.servings = newServings;
 };
 
 },{"regenerator-runtime":"dXNgZ","./config.js":"k5Hzs","./helpers.js":"hGI1E","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"dXNgZ":[function(require,module,exports) {
@@ -2420,6 +2439,16 @@ class ReceipeView extends _parentViewJsDefault.default {
             window.addEventListener(ev, handler);
         });
     }
+    //Method to listen for clicks in the quantity increase / decrease buttons
+    addHandlerServings(handler) {
+        //Adding the event listener to the parent cos we have 2 btns
+        this._parentElement.addEventListener("click", function(e) {
+            const click = e.target.closest(".quantity-button");
+            if (!click) return;
+            const updateServings = Number(click.dataset.updateTo);
+            if (updateServings > 0) handler(updateServings);
+        });
+    }
     //Private method to render the HTMLMarkup
     _generateMarkup() {
         return `
@@ -2507,11 +2536,11 @@ class ReceipeView extends _parentViewJsDefault.default {
       <div class="quantity-buttons">
         <!--Buttons to reduce or increase servings-->
           <!--button to reduce-->
-        <button class="quantity-button btn-reduce" data-update-to="3">
+        <button class="quantity-button btn-reduce" data-update-to="${this._data.servings - 1}">
           <svg xmlns="http://www.w3.org/2000/svg"  viewBox="0 0 256 256" class="servings-icon"><rect width="256" height="256" fill="none"></rect><circle cx="128" cy="128" r="96" fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="24"></circle><line x1="88" y1="128" x2="168" y2="128" fill="none"  stroke-linecap="round" stroke-linejoin="round" stroke-width="24"></line></svg>
         </button>
           <!--button to increase-->
-        <button class="quantity-button btn-increase"  data-update-to="5" >
+        <button class="quantity-button btn-increase"  data-update-to="${this._data.servings + 1}" >
           <svg xmlns="http://www.w3.org/2000/svg"  viewBox="0 0 256 256" class="servings-icon"><rect width="256" height="256" fill="none"></rect><circle cx="128" cy="128" r="96" fill="none"  stroke-linecap="round" stroke-linejoin="round" stroke-width="24"></circle><line x1="88" y1="128" x2="168" y2="128" fill="none"  stroke-linecap="round" stroke-linejoin="round" stroke-width="24"></line><line x1="128" y1="88" x2="128" y2="168" fill="none"  stroke-linecap="round" stroke-linejoin="round" stroke-width="24"></line></svg>
         </button>
       </div>

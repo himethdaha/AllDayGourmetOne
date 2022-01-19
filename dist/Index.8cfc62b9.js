@@ -624,11 +624,6 @@ const activateButton = function(slide) {
 const currDate = new Date();
 const currYear = currDate.getFullYear();
 year.textContent = currYear;
-var FN = document.createElement("input");
-FN.setAttribute("type", "text");
-FN.setAttribute("name", "FullName");
-FN.setAttribute("placeholder", "Full Name");
-document.body.appendChild(FN);
 
 },{}]},["jWVwA","6rimH"], "6rimH", "parcelRequirec81b")
 
