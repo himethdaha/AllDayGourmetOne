@@ -37,6 +37,9 @@ const controlReceipies = async function () {
     //To stop that do a guard clause
     if (!id) return;
 
+    //0)Update side bar with selected result by highlighting it
+    asideResultsView.update(model.getSearchResultsInPage());
+
     //1)CALL THE LOAD RECEIPE FUNCTION
     //Await  the function when calling because its async and async functions return Promises
     //I got to wait the promise to handle it
@@ -88,7 +91,7 @@ const controlServings = function (newServings) {
   //Update servings in the model. Hence, the state
   model.updateServings(newServings);
   //Update the view
-  receipeView.render(model.state.receipe);
+  receipeView.update(model.state.receipe);
 };
 
 //Initialization method

@@ -8,15 +8,21 @@ class AsideResultsView extends parentView {
 
   //Markup for the results
   _generateMarkup() {
+    //get the id
+    const id = window.location.hash.slice(1);
     //data returns an array of strings
     //Therefore got to join
     return this._data
       .map((result) => {
         return `
         <li class="result-preview">
-            <a href="#${result.id}" class="result-preview-link">
+            <a href="#${result.id}" class="result-preview-link ${
+          result.id === id ? "active-preview" : ""
+        }">
             <figure class="result-preview-figure">
-                <img src="${result.image}" alt="${result.title}" class="result-preview-img">
+                <img src="${result.image}" alt="${
+          result.title
+        }" class="result-preview-img">
             </figure>
             <div class="result-preview-description">
                 <h4 class="result-preview-title">${result.title}</h4>

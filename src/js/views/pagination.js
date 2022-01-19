@@ -39,10 +39,7 @@ class Pagination extends parentView {
             </button>
                 `;
     }
-    //When on the 1st page and there are no more results
-    if (currentPage === 1 && noOfPages === 1) {
-      return "";
-    }
+
     //When on the last page
     if (currentPage === noOfPages && noOfPages > 1) {
       return `
@@ -71,6 +68,12 @@ class Pagination extends parentView {
         </button>
         
             `;
+    }
+    //When on the 1st page and there are no more results
+    if (currentPage === 1 && noOfPages === 1) {
+      return "";
+    } else {
+      return "";
     }
   }
 }

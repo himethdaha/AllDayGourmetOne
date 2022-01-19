@@ -553,6 +553,8 @@ const controlReceipies = async function() {
         //When loading without an id it gives an error
         //To stop that do a guard clause
         if (!id) return;
+        //0)Update side bar with selected result by highlighting it
+        _asideResultsViewJsDefault.default.update(_modelJs.getSearchResultsInPage());
         //1)CALL THE LOAD RECEIPE FUNCTION
         //Await  the function when calling because its async and async functions return Promises
         //I got to wait the promise to handle it
@@ -600,7 +602,7 @@ const controlServings = function(newServings) {
     //Update servings in the model. Hence, the state
     _modelJs.updateServings(newServings);
     //Update the view
-    _receipeViewJsDefault.default.render(_modelJs.state.receipe);
+    _receipeViewJsDefault.default.update(_modelJs.state.receipe);
 };
 //Initialization method
 //Method which executes everything once the page is loaded
@@ -2591,6 +2593,38 @@ class parentView {
         this._clear();
         this._parentElement.insertAdjacentHTML("afterbegin", markup);
     }
+    //Method to update the DOM
+    update(data) {
+        //storing the data rendered by the controller in this property
+        this._data = data;
+        //This is currently a string
+        const newMarkup = this._generateMarkup();
+        //Convert the markup string to a DOM object that can be stored in memory
+        //So that object can be compared with the current DOM, to make the neccesary updates
+        const newDom = document.createRange().createContextualFragment(newMarkup);
+        //These return Node lists. Convert to arrays
+        const newElements = Array.from(newDom.querySelectorAll("*"));
+        //Get the elements in the searched-item div
+        const currentElements = Array.from(this._parentElement.querySelectorAll("*"));
+        //Comparing newElements and currentElements
+        newElements.forEach((newEl, i)=>{
+            //Current element at position 'i'
+            const currEL = currentElements[i];
+            //CHANGE text content
+            //If the node content isn't equal AND the firstchild's node value isn't empty, change the text content
+            if (!newEl.isEqualNode(currEL) && newEl.firstChild.nodeValue.trim() !== "") currEL.textContent = newEl.textContent;
+            //CHANGE attributes
+            //change the data values of the quantity buttons
+            if (!newEl.isEqualNode(currEL)) //Get the attributes of the dissimilar nodes
+            //Convert it to an array
+            //Loop over the attributes
+            //Set the new attributes to the cuurent attributes
+            Array.from(newEl.attributes).forEach((attr)=>{
+                //Replace current elements attributes with new Elements attributes
+                currEL.setAttribute(attr.name, attr.value);
+            });
+        });
+    }
     //Method to clear the parent container of the markup
     _clear() {
         this._parentElement.innerHTML = "";
@@ -2903,12 +2937,14 @@ class AsideResultsView extends _parentViewJsDefault.default {
     _errorMessage = "No food items found. Please check your spellings or try again! 🙃";
     //Markup for the results
     _generateMarkup() {
+        //get the id
+        const id = window.location.hash.slice(1);
         //data returns an array of strings
         //Therefore got to join
         return this._data.map((result)=>{
             return `
         <li class="result-preview">
-            <a href="#${result.id}" class="result-preview-link">
+            <a href="#${result.id}" class="result-preview-link ${result.id === id ? "active-preview" : ""}">
             <figure class="result-preview-figure">
                 <img src="${result.image}" alt="${result.title}" class="result-preview-img">
             </figure>
@@ -2960,8 +2996,6 @@ class Pagination extends _parentViewJsDefault.default {
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" class="pagination-icon"><rect width="256" height="256" fill="none"></rect><line x1="40" y1="128" x2="216" y2="128" fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="24"></line><polyline points="144 56 216 128 144 200" fill="none"  stroke-linecap="round" stroke-linejoin="round" stroke-width="24"></polyline></svg>
             </button>
                 `;
-        //When on the 1st page and there are no more results
-        if (currentPage === 1 && noOfPages === 1) return "";
         //When on the last page
         if (currentPage === noOfPages && noOfPages > 1) return `
             <button class="btn-pagination pagination-before" data-goto="${currentPage - 1}">
@@ -2981,6 +3015,9 @@ class Pagination extends _parentViewJsDefault.default {
         </button>
         
             `;
+        //When on the 1st page and there are no more results
+        if (currentPage === 1 && noOfPages === 1) return "";
+        else return "";
     }
 }
 exports.default = new Pagination();

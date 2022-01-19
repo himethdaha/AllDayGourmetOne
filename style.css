@@ -438,7 +438,7 @@ body {
   transform: translateY(-3px);
 }
 
-.active {
+.active-preview {
   background-color: #f8f9fa;
 }
 

@@ -13,6 +13,51 @@ export default class parentView {
     this._parentElement.insertAdjacentHTML("afterbegin", markup);
   }
 
+  //Method to update the DOM
+  update(data) {
+    //storing the data rendered by the controller in this property
+    this._data = data;
+    //This is currently a string
+    const newMarkup = this._generateMarkup();
+    //Convert the markup string to a DOM object that can be stored in memory
+    //So that object can be compared with the current DOM, to make the neccesary updates
+    const newDom = document.createRange().createContextualFragment(newMarkup);
+    //These return Node lists. Convert to arrays
+    const newElements = Array.from(newDom.querySelectorAll("*"));
+    //Get the elements in the searched-item div
+    const currentElements = Array.from(
+      this._parentElement.querySelectorAll("*")
+    );
+
+    //Comparing newElements and currentElements
+    newElements.forEach((newEl, i) => {
+      //Current element at position 'i'
+      const currEL = currentElements[i];
+
+      //CHANGE text content
+      //If the node content isn't equal AND the firstchild's node value isn't empty, change the text content
+      if (
+        !newEl.isEqualNode(currEL) &&
+        newEl.firstChild.nodeValue.trim() !== ""
+      ) {
+        currEL.textContent = newEl.textContent;
+      }
+
+      //CHANGE attributes
+      //change the data values of the quantity buttons
+      if (!newEl.isEqualNode(currEL)) {
+        //Get the attributes of the dissimilar nodes
+        //Convert it to an array
+        //Loop over the attributes
+        //Set the new attributes to the cuurent attributes
+        Array.from(newEl.attributes).forEach((attr) => {
+          //Replace current elements attributes with new Elements attributes
+          currEL.setAttribute(attr.name, attr.value);
+        });
+      }
+    });
+  }
+
   //Method to clear the parent container of the markup
   _clear() {
     this._parentElement.innerHTML = "";
