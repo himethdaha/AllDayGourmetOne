@@ -533,6 +533,9 @@ var _searchResultsViewJsDefault = parcelHelpers.interopDefault(_searchResultsVie
 //Importing the view for the results after a search
 var _asideResultsViewJs = require("./views/asideResultsView.js");
 var _asideResultsViewJsDefault = parcelHelpers.interopDefault(_asideResultsViewJs);
+//Importing the view for the pagination buttons
+var _paginationJs = require("./views/pagination.js");
+var _paginationJsDefault = parcelHelpers.interopDefault(_paginationJs);
 //Polyfilling asyn/await
 var _runtime = require("regenerator-runtime/runtime");
 "use strict";
@@ -574,10 +577,23 @@ const getAllReceipies = async function() {
         if (!query) return;
         //No need to store in a variable cos all this does is manipulate the state object
         await _modelJs.loadAllReceipies(query);
+        //Here the results rendered are for the 1st page
         _asideResultsViewJsDefault.default.render(_modelJs.getSearchResultsInPage());
+        //Render the pagination buttons below the search results
+        //Have to pass in the entire search object for the render method
+        _paginationJsDefault.default.render(_modelJs.state.search);
     } catch (error) {
         console.log(error);
     }
+};
+//Controller executed on pagination button click
+const btnPagination = function(pageNo) {
+    //Render the new results using getSeachResultsInPage
+    //This method is insdie the asideResultsView which loops through all the results and render the data
+    //REMEMBER??..
+    _asideResultsViewJsDefault.default.render(_modelJs.getSearchResultsInPage(pageNo));
+    //Render the pagination buttons
+    _paginationJsDefault.default.render(_modelJs.state.search);
 };
 //Initialization method
 //Method which executes everything once the page is loaded
@@ -585,10 +601,11 @@ const getAllReceipies = async function() {
 const init = function() {
     _receipeViewJsDefault.default.addHandlerRender(controlReceipies);
     _searchResultsViewJsDefault.default.addHandlerSearch(getAllReceipies);
+    _paginationJsDefault.default.addhandlerPagination(btnPagination);
 };
 init();
 
-},{"core-js/modules/web.immediate.js":"49tUX","./model.js":"Y4A21","regenerator-runtime":"dXNgZ","./views/receipeView.js":"inPdx","./views/searchResultsView.js":"cXIN2","./views/asideResultsView.js":"hGOwx","regenerator-runtime/runtime":"dXNgZ","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"49tUX":[function(require,module,exports) {
+},{"core-js/modules/web.immediate.js":"49tUX","./model.js":"Y4A21","regenerator-runtime":"dXNgZ","./views/receipeView.js":"inPdx","./views/searchResultsView.js":"cXIN2","./views/asideResultsView.js":"hGOwx","./views/pagination.js":"lOFRU","regenerator-runtime/runtime":"dXNgZ","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"49tUX":[function(require,module,exports) {
 var $ = require('../internals/export');
 var global = require('../internals/global');
 var task = require('../internals/task');
@@ -2825,18 +2842,18 @@ parcelHelpers.defineInteropFlag(exports);
 class SearchResultsView {
     //Private property
     //Form element as the parent element
-    _parentEl = document.querySelector(".menu-search-form");
+    _parentElement = document.querySelector(".menu-search-form");
     //Method to get the value in the input field
     getQuery() {
-        const queryValue = this._parentEl.querySelector(".input-item").value;
+        const queryValue = this._parentElement.querySelector(".input-item").value;
         //Clear on submit
-        this._parentEl.querySelector(".input-item").value = "";
+        this._parentElement.querySelector(".input-item").value = "";
         return queryValue;
     }
     //Publisher method to the subscriber getAllReceipies
     addHandlerSearch(handler) {
         //Event listner handled on the submit event in the entire form
-        this._parentEl.addEventListener("submit", function(e) {
+        this._parentElement.addEventListener("submit", function(e) {
             //Prevent default cos otherwise the page will reload on submit...Remember?
             e.preventDefault();
             handler();
@@ -2877,6 +2894,67 @@ class AsideResultsView extends _parentViewJsDefault.default {
     }
 }
 exports.default = new AsideResultsView();
+
+},{"./parentView.js":"gtzxk","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"lOFRU":[function(require,module,exports) {
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+var _parentViewJs = require("./parentView.js");
+var _parentViewJsDefault = parcelHelpers.interopDefault(_parentViewJs);
+class Pagination extends _parentViewJsDefault.default {
+    //Private Property
+    //parent element
+    _parentElement = document.querySelector(".pagination-btn-section");
+    //Method to handle button click
+    addhandlerPagination(handler) {
+        //Adding the event listner to the parent because there are two buttons
+        this._parentElement.addEventListener("click", function(e) {
+            //Setting the target to the clicked parts parent element
+            const clicked = e.target.closest(".btn-pagination");
+            const goTo = Number(clicked.dataset.goto);
+            //If button isn't clicked
+            if (!clicked) return;
+            console.log(clicked);
+            console.log(goTo);
+            handler(goTo);
+        });
+    }
+    //Generate the markup for buttons
+    _generateMarkup() {
+        const currentPage = this._data.page;
+        //Get the number of pages that should be displayed
+        const noOfPages = Math.round(this._data.results.length / this._data.resultsPerPage);
+        console.log(noOfPages);
+        //When on the 1st page and there are more results
+        if (currentPage === 1 && noOfPages > 1) return `
+            <button class="btn-pagination pagination-after" data-goto="${currentPage + 1}">
+                <span class="btn-pagination-text">Page ${currentPage + 1}</span>
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" class="pagination-icon"><rect width="256" height="256" fill="none"></rect><line x1="40" y1="128" x2="216" y2="128" fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="24"></line><polyline points="144 56 216 128 144 200" fill="none"  stroke-linecap="round" stroke-linejoin="round" stroke-width="24"></polyline></svg>
+            </button>
+                `;
+        //When on the 1st page and there are no more results
+        if (currentPage === 1 && noOfPages === 1) return "";
+        //When on the last page
+        if (currentPage === noOfPages && noOfPages > 1) return `
+            <button class="btn-pagination pagination-before" data-goto="${currentPage - 1}">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" class="pagination-icon"><rect width="256" height="256" fill="none"></rect><line x1="216" y1="128" x2="40" y2="128" fill="none"  stroke-linecap="round" stroke-linejoin="round" stroke-width="24"></line><polyline points="112 56 40 128 112 200" fill="none"  stroke-linecap="round" stroke-linejoin="round" stroke-width="24"></polyline></svg>               
+                <span class="btn-pagination-text">Page ${currentPage - 1}</span>
+            </button>
+                `;
+        //When on a page other than 1st or last
+        if (currentPage > 1) return `
+        <button class="btn-pagination pagination-before" data-goto="${currentPage - 1}">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" class="pagination-icon"><rect width="256" height="256" fill="none"></rect><line x1="216" y1="128" x2="40" y2="128" fill="none"  stroke-linecap="round" stroke-linejoin="round" stroke-width="24"></line><polyline points="112 56 40 128 112 200" fill="none"  stroke-linecap="round" stroke-linejoin="round" stroke-width="24"></polyline></svg>               
+            <span class="btn-pagination-text">Page ${currentPage - 1}</span>
+        </button>
+        <button class="btn-pagination pagination-after" data-goto="${currentPage + 1}">
+            <span class="btn-pagination-text">Page ${currentPage + 1}</span>
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" class="pagination-icon"><rect width="256" height="256" fill="none"></rect><line x1="40" y1="128" x2="216" y2="128" fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="24"></line><polyline points="144 56 216 128 144 200" fill="none"  stroke-linecap="round" stroke-linejoin="round" stroke-width="24"></polyline></svg>
+        </button>
+        
+            `;
+    }
+}
+exports.default = new Pagination();
 
 },{"./parentView.js":"gtzxk","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}]},["ddCAb","aenu9"], "aenu9", "parcelRequirec81b")
 

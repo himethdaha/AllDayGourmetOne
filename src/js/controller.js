@@ -7,6 +7,8 @@ import receipeView from "./views/receipeView.js";
 import searchResultsView from "./views/searchResultsView.js";
 //Importing the view for the results after a search
 import asideResultsView from "./views/asideResultsView.js";
+//Importing the view for the pagination buttons
+import pagination from "./views/pagination.js";
 ("use strict");
 //Import from model
 
@@ -14,6 +16,7 @@ import asideResultsView from "./views/asideResultsView.js";
 import "core-js/stable";
 //Polyfilling asyn/await
 import "regenerator-runtime/runtime";
+import pagination from "./views/pagination.js";
 
 //Implementing parcels HMR
 if (module.hot) {
@@ -60,10 +63,24 @@ const getAllReceipies = async function () {
     if (!query) return;
     //No need to store in a variable cos all this does is manipulate the state object
     await model.loadAllReceipies(query);
+    //Here the results rendered are for the 1st page
     asideResultsView.render(model.getSearchResultsInPage());
+    //Render the pagination buttons below the search results
+    //Have to pass in the entire search object for the render method
+    pagination.render(model.state.search);
   } catch (error) {
     console.log(error);
   }
+};
+
+//Controller executed on pagination button click
+const btnPagination = function (pageNo) {
+  //Render the new results using getSeachResultsInPage
+  //This method is insdie the asideResultsView which loops through all the results and render the data
+  //REMEMBER??..
+  asideResultsView.render(model.getSearchResultsInPage(pageNo));
+  //Render the pagination buttons
+  pagination.render(model.state.search);
 };
 
 //Initialization method
@@ -72,6 +89,7 @@ const getAllReceipies = async function () {
 const init = function () {
   receipeView.addHandlerRender(controlReceipies);
   searchResultsView.addHandlerSearch(getAllReceipies);
+  pagination.addhandlerPagination(btnPagination);
 };
 
 init();
