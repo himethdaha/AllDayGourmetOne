@@ -305,7 +305,7 @@ body {
 /*******SEARCH FOR RECEIPIES SECTION*********/
 .menu-search {
   margin-bottom: 14rem;
-  height: 110rem;
+  height: 100%;
 }
 .menu-search-header-text {
   display: flex;

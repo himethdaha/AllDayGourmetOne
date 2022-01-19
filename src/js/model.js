@@ -1,6 +1,7 @@
 "use strict";
 import { async } from "regenerator-runtime";
 import { API_URL } from "./config.js";
+import { RES_PER_PAGE } from "./config.js";
 import { validateAndGetJson } from "./helpers.js";
 //////////////////////////////////// BUSINESS LOGIC////////////////////////////////////
 
@@ -11,6 +12,9 @@ export const state = {
   search: {
     query: "",
     results: [],
+    //For pagination
+    page: 1,
+    resultsPerPage: RES_PER_PAGE,
   },
 };
 
@@ -60,4 +64,17 @@ export const loadAllReceipies = async function (query) {
     //Throw the error so the controller can catch it
     throw error;
   }
+};
+
+//Function to get a set number of results per page
+export const getSearchResultsInPage = function (page = state.search.page) {
+  //Storing the page number in the state object
+  state.search.page = page;
+  //Start value
+  const start = (page - 1) * state.search.resultsPerPage;
+  //End value
+  const end = page * state.search.resultsPerPage;
+
+  //Returning all the results between start and end
+  return state.search.results.slice(start, end);
 };

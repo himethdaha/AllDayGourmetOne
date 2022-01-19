@@ -1,6 +1,10 @@
 export default class parentView {
   _data;
   render(data) {
+    //Check if any data is received and if not return the renderError method
+    if (!data || data.length === 0) {
+      return this.renderError();
+    }
     //storing the data rendered by the controller in this property
     this._data = data;
     const markup = this._generateMarkup();

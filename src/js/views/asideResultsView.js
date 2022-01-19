@@ -3,6 +3,8 @@ import parentView from "./parentView.js";
 class AsideResultsView extends parentView {
   //Adding the parent element
   _parentElement = document.querySelector(".result-list");
+  _errorMessage =
+    "No food items found. Please check your spellings or try again! 🙃";
 
   //Markup for the results
   _generateMarkup() {

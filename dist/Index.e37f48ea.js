@@ -574,9 +574,7 @@ const getAllReceipies = async function() {
         if (!query) return;
         //No need to store in a variable cos all this does is manipulate the state object
         await _modelJs.loadAllReceipies(query);
-        console.log(query);
-        console.log(_modelJs.state.search.results);
-        _asideResultsViewJsDefault.default.render(_modelJs.state.search.results);
+        _asideResultsViewJsDefault.default.render(_modelJs.getSearchResultsInPage());
     } catch (error) {
         console.log(error);
     }
@@ -590,7 +588,7 @@ const init = function() {
 };
 init();
 
-},{"core-js/modules/web.immediate.js":"49tUX","./model.js":"Y4A21","regenerator-runtime":"dXNgZ","./views/receipeView.js":"inPdx","./views/searchResultsView.js":"cXIN2","regenerator-runtime/runtime":"dXNgZ","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3","./views/asideResultsView.js":"hGOwx"}],"49tUX":[function(require,module,exports) {
+},{"core-js/modules/web.immediate.js":"49tUX","./model.js":"Y4A21","regenerator-runtime":"dXNgZ","./views/receipeView.js":"inPdx","./views/searchResultsView.js":"cXIN2","./views/asideResultsView.js":"hGOwx","regenerator-runtime/runtime":"dXNgZ","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"49tUX":[function(require,module,exports) {
 var $ = require('../internals/export');
 var global = require('../internals/global');
 var task = require('../internals/task');
@@ -1649,6 +1647,8 @@ parcelHelpers.export(exports, "loadReceipe", ()=>loadReceipe
 );
 parcelHelpers.export(exports, "loadAllReceipies", ()=>loadAllReceipies
 );
+parcelHelpers.export(exports, "getSearchResultsInPage", ()=>getSearchResultsInPage
+);
 var _regeneratorRuntime = require("regenerator-runtime");
 var _configJs = require("./config.js");
 var _helpersJs = require("./helpers.js");
@@ -1658,7 +1658,10 @@ const state = {
     },
     search: {
         query: "",
-        results: []
+        results: [],
+        //For pagination
+        page: 1,
+        resultsPerPage: _configJs.RES_PER_PAGE
     }
 };
 const loadReceipe = async function(id) {
@@ -1704,6 +1707,16 @@ const loadAllReceipies = async function(query) {
         //Throw the error so the controller can catch it
         throw error;
     }
+};
+const getSearchResultsInPage = function(page = state.search.page) {
+    //Storing the page number in the state object
+    state.search.page = page;
+    //Start value
+    const start = (page - 1) * state.search.resultsPerPage;
+    //End value
+    const end = page * state.search.resultsPerPage;
+    //Returning all the results between start and end
+    return state.search.results.slice(start, end);
 };
 
 },{"regenerator-runtime":"dXNgZ","./config.js":"k5Hzs","./helpers.js":"hGI1E","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"dXNgZ":[function(require,module,exports) {
@@ -2293,9 +2306,12 @@ parcelHelpers.export(exports, "API_URL", ()=>API_URL
 );
 parcelHelpers.export(exports, "TIMEOUT_SECS", ()=>TIMEOUT_SECS
 );
+parcelHelpers.export(exports, "RES_PER_PAGE", ()=>RES_PER_PAGE
+);
 "use strict";
 const API_URL = "https://forkify-api.herokuapp.com/api/v2/recipes/";
 const TIMEOUT_SECS = 10;
+const RES_PER_PAGE = 10;
 
 },{"@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"gkKU3":[function(require,module,exports) {
 exports.interopDefault = function(a) {
@@ -2514,7 +2530,42 @@ class ReceipeView extends _parentViewJsDefault.default {
 }
 exports.default = new ReceipeView();
 
-},{"fractional":"3SU56","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3","./parentView.js":"gtzxk"}],"3SU56":[function(require,module,exports) {
+},{"./parentView.js":"gtzxk","fractional":"3SU56","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"gtzxk":[function(require,module,exports) {
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+class parentView {
+    _data;
+    render(data) {
+        //Check if any data is received and if not return the renderError method
+        if (!data || data.length === 0) return this.renderError();
+        //storing the data rendered by the controller in this property
+        this._data = data;
+        const markup = this._generateMarkup();
+        //Clear parent element
+        this._clear();
+        this._parentElement.insertAdjacentHTML("afterbegin", markup);
+    }
+    //Method to clear the parent container of the markup
+    _clear() {
+        this._parentElement.innerHTML = "";
+    }
+    //Markup for error message
+    renderError(message = this._errorMessage) {
+        const markup = `
+      <div class="error-message">
+      <div class="error-icon">
+        <svg xmlns="http://www.w3.org/2000/svg"  viewBox="0 0 256 256" class="error-icon"><rect width="256" height="256" fill="none"></rect><polyline points="128 240 154.3 200 104 200 130.3 160" fill="none"  stroke-linecap="round" stroke-linejoin="round" stroke-width="24"></polyline><path d="M88,92a68,68,0,1,1,68,68H76a44,44,0,0,1,0-88,42.5,42.5,0,0,1,14.3,2.4" fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="24"></path></svg>                
+      </div>
+      <span class="error-message-text">${message}</span>
+    </div>
+            `;
+        this._clear();
+        this._parentElement.insertAdjacentHTML("afterbegin", markup);
+    }
+}
+exports.default = parentView;
+
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"3SU56":[function(require,module,exports) {
 /*
 fraction.js
 A Javascript fraction library.
@@ -2767,40 +2818,7 @@ Fraction.primeFactors = function(n) {
 };
 module.exports.Fraction = Fraction;
 
-},{}],"gtzxk":[function(require,module,exports) {
-var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
-parcelHelpers.defineInteropFlag(exports);
-class parentView {
-    _data;
-    render(data) {
-        //storing the data rendered by the controller in this property
-        this._data = data;
-        const markup = this._generateMarkup();
-        //Clear parent element
-        this._clear();
-        this._parentElement.insertAdjacentHTML("afterbegin", markup);
-    }
-    //Method to clear the parent container of the markup
-    _clear() {
-        this._parentElement.innerHTML = "";
-    }
-    //Markup for error message
-    renderError(message = this._errorMessage) {
-        const markup = `
-      <div class="error-message">
-      <div class="error-icon">
-        <svg xmlns="http://www.w3.org/2000/svg"  viewBox="0 0 256 256" class="error-icon"><rect width="256" height="256" fill="none"></rect><polyline points="128 240 154.3 200 104 200 130.3 160" fill="none"  stroke-linecap="round" stroke-linejoin="round" stroke-width="24"></polyline><path d="M88,92a68,68,0,1,1,68,68H76a44,44,0,0,1,0-88,42.5,42.5,0,0,1,14.3,2.4" fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="24"></path></svg>                
-      </div>
-      <span class="error-message-text">${message}</span>
-    </div>
-            `;
-        this._clear();
-        this._parentElement.insertAdjacentHTML("afterbegin", markup);
-    }
-}
-exports.default = parentView;
-
-},{"@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"cXIN2":[function(require,module,exports) {
+},{}],"cXIN2":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 "use strict";
@@ -2836,6 +2854,7 @@ var _parentViewJsDefault = parcelHelpers.interopDefault(_parentViewJs);
 class AsideResultsView extends _parentViewJsDefault.default {
     //Adding the parent element
     _parentElement = document.querySelector(".result-list");
+    _errorMessage = "No food items found. Please check your spellings or try again! 🙃";
     //Markup for the results
     _generateMarkup() {
         //data returns an array of strings

@@ -60,9 +60,7 @@ const getAllReceipies = async function () {
     if (!query) return;
     //No need to store in a variable cos all this does is manipulate the state object
     await model.loadAllReceipies(query);
-    console.log(query);
-    console.log(model.state.search.results);
-    asideResultsView.render(model.state.search.results);
+    asideResultsView.render(model.getSearchResultsInPage());
   } catch (error) {
     console.log(error);
   }
