@@ -1,29 +1,14 @@
+import parentView from "./parentView.js";
 import Fraction from "fractional";
 ("use strict");
 
 //Class for the Receipe View
-class ReceipeView {
+class ReceipeView extends parentView {
   //Private Property
   //Prierty to be inherted by other classes
-  #parentElement = document.querySelector(".searched-item");
-  #data;
-  #errorMessage =
+  _parentElement = document.querySelector(".searched-item");
+  _errorMessage =
     "Sorry, Could not find what you are looking for. Please try Again! 🥺";
-
-  render(data) {
-    //storing the data rendered by the controller in this property
-    this.#data = data;
-
-    const markup = this.#generateMarkup();
-    //Clear parent element
-    this.#clear();
-    this.#parentElement.insertAdjacentHTML("afterbegin", markup);
-  }
-
-  //Method to clear the parent container of the markup
-  #clear() {
-    this.#parentElement.innerHTML = "";
-  }
 
   //Method as the Publisher. Therefore, needs access to the subscriber (handler function)
   //Rendering the receipe right in the beginning
@@ -34,32 +19,18 @@ class ReceipeView {
     });
   }
 
-  //Markup for error message
-  renderError(message = this.#errorMessage) {
-    const markup = `
-    <div class="error-message">
-    <div class="error-icon">
-      <svg xmlns="http://www.w3.org/2000/svg"  viewBox="0 0 256 256" class="error-icon"><rect width="256" height="256" fill="none"></rect><polyline points="128 240 154.3 200 104 200 130.3 160" fill="none"  stroke-linecap="round" stroke-linejoin="round" stroke-width="24"></polyline><path d="M88,92a68,68,0,1,1,68,68H76a44,44,0,0,1,0-88,42.5,42.5,0,0,1,14.3,2.4" fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="24"></path></svg>                
-    </div>
-    <span class="error-message-text">${message}</span>
-  </div>
-          `;
-    this.#clear();
-    this.#parentElement.insertAdjacentHTML("afterbegin", markup);
-  }
-
   //Private method to render the HTMLMarkup
-  #generateMarkup() {
+  _generateMarkup() {
     return `
     <figure class="figure-section">
     <img
-      src="${this.#data.image}"
-      alt="${this.#data.title}"
+      src="${this._data.image}"
+      alt="${this._data.title}"
       class="food-image"
     />
     <h1 class="food-title">
       <span class="food-title-span"
-        >${this.#data.title}</span
+        >${this._data.title}</span
       >
     </h1>
   </figure>
@@ -90,7 +61,7 @@ class ReceipeView {
         ></polyline>
       </svg>
       <span class="cooking-info-no cooking-time-no data-time">${
-        this.#data.cookingTime
+        this._data.cookingTime
       }</span>
       <span class="cooking-info-text cooking-time-text">Minitues</span>
     </div>
@@ -133,7 +104,7 @@ class ReceipeView {
         ></path>
       </svg>
       <span class="cooking-info-no servings-number">${
-        this.#data.servings
+        this._data.servings
       }</span>
       <span class="cooking-info-text servings-number-text">Servings</span>
       <div class="quantity-buttons">
@@ -156,7 +127,7 @@ class ReceipeView {
   <div class="dish-ingredients">
     <h2 class="ingredients-header">Receipe Ingredients</h2>
     <ul class="ingredient-list">
-    ${this.#data.ingredients
+    ${this._data.ingredients
       .map((ing) => {
         return `
       <li class="ingredient">

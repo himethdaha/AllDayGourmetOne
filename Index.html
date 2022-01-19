@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
@@ -7,18 +8,21 @@
       name="description"
       content="A food delivery site that prioritizes customer satisfaction. Uses an API to get thousands of receipies and lets the user select what they want. Within a few clicks food will be at your doorstep"
     />
+  
+ 
+    <title>AllDayGourmet-Landing Page</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
       href="https://fonts.googleapis.com/css2?family=Shadows+Into+Light&family=Ubuntu:wght@400;500;700&display=swap"
       rel="stylesheet"
     />
-    <title>AllDayGourmet-Landing Page</title>
     <link rel="icon" href="imgs/icon.png" type="image/x-icon" />
     <link rel="stylesheet" href="style.css" />
     <script defer src="https://unpkg.com/phosphor-icons"></script>
-    <script defer type="module" src="src/js/controller.js"></script>
-    <script defer type="module" src="src/js/script.js"></script>
+      <!-- <script defer type="module" src="./src/js/script.js"></script> -->
+      <script defer type="module" src="./src/js/controller.js"></script>
+   
   </head>
   <body class="container">
     <!--Title and navbar-->
@@ -114,6 +118,7 @@
         </div>
       </section>
 
+
       <!--Why Us section-->
       <section class="why-us" id="why-us-section">
         <h2 class="why-us-main-header">Why Choose Us</h2>
@@ -165,7 +170,6 @@
           </p>
         </div>
       </section>
-
       <!--Menu Search section-->
       <section class="menu-search" id="order-section">
         <h2 class="menu-search-header-text">Order Now</h2>
@@ -180,12 +184,10 @@
             <form class="menu-search-form">
               <input
                 type="text"
-                name="search-food"
-                id="search-food"
                 placeholder="Search for over 1000 Dishes..."
                 class="input-item"
-              />
-              <button type="button" class="btn-search">
+              >
+              <button type="submit" class="btn-search">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   viewBox="0 0 256 256"
@@ -259,32 +261,19 @@
             <div class="aside">
               <!--UnOrdered list of all the searched results-->
               <ul class="result-list">
-                <!--Preview with an image and title-->
+                <!--Preview with an image and title
                 <li class="result-preview">
                   <a href="#5ed6604591c37cdc054bcc7b" class="result-preview-link">
-                    <!--Image of the result-->
+                    Image of the result
                     <figure class="result-preview-figure">
                       <img src="http://forkify-api.herokuapp.com/images/1957715ab.jpg" alt="" class="result-preview-img">
                     </figure>
-                    <!--Title of the result-->
+                    Title of the result
                     <div class="result-preview-description">
                       <h4 class="result-preview-title">Spicy Chicken And Pepper Jack</h4>
                     </div>
                   </a>
-                </li>
-                 <!--Preview with an image and title-->
-                 <li class="result-preview">
-                  <a href="#5ed6604591c37cdc054bc8fd" class="result-preview-link">
-                    <!--Image of the result-->
-                    <figure class="result-preview-figure">
-                      <img src="http://forkify-api.herokuapp.com/images/1957715ab.jpg" alt="" class="result-preview-img">
-                    </figure>
-                    <!--Title of the result-->
-                    <div class="result-preview-description">
-                      <h4 class="result-preview-title">Spicy Chicken And Pepper Jack2</h4>
-                    </div>
-                  </a>
-                </li>
+                </li>-->
               </ul>
               <div class="pagination-btn-section">
                 <button class="btn-pagination pagination-after data-goto="2"">
@@ -771,13 +760,6 @@
       </section>
     </footer>
     <!--Ion Icon modules-->
-    <script
-      type="module"
-      src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"
-    ></script>
-    <script
-      nomodule
-      src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"
-    ></script>
+   
   </body>
 </html>

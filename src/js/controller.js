@@ -3,6 +3,10 @@ import * as model from "./model.js";
 import { async } from "regenerator-runtime";
 //Importing the receipieView as a default export
 import receipeView from "./views/receipeView.js";
+//Importing the SearchResultsView as a default export
+import searchResultsView from "./views/searchResultsView.js";
+//Importing the view for the results after a search
+import asideResultsView from "./views/asideResultsView.js";
 ("use strict");
 //Import from model
 
@@ -10,6 +14,11 @@ import receipeView from "./views/receipeView.js";
 import "core-js/stable";
 //Polyfilling asyn/await
 import "regenerator-runtime/runtime";
+
+//Implementing parcels HMR
+if (module.hot) {
+  module.hot.accept();
+}
 
 const parentElement = document.querySelector(".searched-item");
 
@@ -26,9 +35,9 @@ const controlReceipies = async function () {
     if (!id) return;
 
     //1)CALL THE LOAD RECEIPE FUNCTION
-    //Await the function when calling because its async and async functions return Promises
+    //Await  the function when calling because its async and async functions return Promises
     //I got to wait the promise to handle it
-    //Receipe is loaded here and is stored in the state object
+    //Receipe is loaded here and is stored in the state object. Hence, no need to store in a variable
     await model.loadReceipe(id);
 
     //2)RENDER RECEIPE
@@ -42,11 +51,29 @@ const controlReceipies = async function () {
   }
 };
 
+//Function to get all the searched receipies
+//Subscriber for the publisher addHandlerSearch
+const getAllReceipies = async function () {
+  try {
+    //Get the query value from the method inside the getQuery in searchResultsView
+    const query = searchResultsView.getQuery();
+    if (!query) return;
+    //No need to store in a variable cos all this does is manipulate the state object
+    await model.loadAllReceipies(query);
+    console.log(query);
+    console.log(model.state.search.results);
+    asideResultsView.render(model.state.search.results);
+  } catch (error) {
+    console.log(error);
+  }
+};
+
 //Initialization method
 //Method which executes everything once the page is loaded
 //Publisher Subscriber Pattern
 const init = function () {
   receipeView.addHandlerRender(controlReceipies);
+  searchResultsView.addHandlerSearch(getAllReceipies);
 };
 
 init();

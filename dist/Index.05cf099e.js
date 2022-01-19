@@ -526,6 +526,9 @@ var _regeneratorRuntime = require("regenerator-runtime");
 //Importing the receipieView as a default export
 var _receipeViewJs = require("./views/receipeView.js");
 var _receipeViewJsDefault = parcelHelpers.interopDefault(_receipeViewJs);
+//Importing the SearchResultsView as a default export
+var _searchResultsViewJs = require("./views/searchResultsView.js");
+var _searchResultsViewJsDefault = parcelHelpers.interopDefault(_searchResultsViewJs);
 //Import from model
 //Polyfilling everything except async/await
 var _stable = require("core-js/stable");
@@ -545,9 +548,9 @@ const controlReceipies = async function() {
         //To stop that do a guard clause
         if (!id) return;
         //1)CALL THE LOAD RECEIPE FUNCTION
-        //Await the function when calling because its async and async functions return Promises
+        //Await  the function when calling because its async and async functions return Promises
         //I got to wait the promise to handle it
-        //Receipe is loaded here and is stored in the state object
+        //Receipe is loaded here and is stored in the state object. Hence, no need to store in a variable
         await _modelJs.loadReceipe(id);
         //2)RENDER RECEIPE
         //ReceipeView object will render and store this data in itself
@@ -559,15 +562,29 @@ const controlReceipies = async function() {
         _receipeViewJsDefault.default.renderError();
     }
 };
+//Function to get all the searched receipies
+//Subscriber for the publisher addHandlerSearch
+const getAllReceipies = async function() {
+    try {
+        //Get the query value from the method inside the getQuery in searchResultsView
+        const query = _searchResultsViewJsDefault.default.getQuery();
+        if (!query) return;
+        //No need to store in a variable cos all this does is manipulate the state object
+        await _modelJs.loadAllReceipies(query);
+    } catch (error) {
+        console.log(error);
+    }
+};
 //Initialization method
 //Method which executes everything once the page is loaded
 //Publisher Subscriber Pattern
 const init = function() {
     _receipeViewJsDefault.default.addHandlerRender(controlReceipies);
+    _searchResultsViewJsDefault.default.addHandlerSearch(getAllReceipies);
 };
 init();
 
-},{"core-js/stable":"95FYz","regenerator-runtime/runtime":"1EBPE","./model.js":"1pVJj","regenerator-runtime":"1EBPE","./views/receipeView.js":"ewyyT","@parcel/transformer-js/src/esmodule-helpers.js":"ciiiV"}],"95FYz":[function(require,module,exports) {
+},{"core-js/stable":"95FYz","regenerator-runtime/runtime":"1EBPE","./model.js":"1pVJj","regenerator-runtime":"1EBPE","./views/receipeView.js":"ewyyT","@parcel/transformer-js/src/esmodule-helpers.js":"ciiiV","./views/searchResultsView.js":"bqL0U"}],"95FYz":[function(require,module,exports) {
 require('../modules/es.symbol');
 require('../modules/es.symbol.description');
 require('../modules/es.symbol.async-iterator');
@@ -14911,18 +14928,25 @@ parcelHelpers.export(exports, "state", ()=>state
 );
 parcelHelpers.export(exports, "loadReceipe", ()=>loadReceipe
 );
+parcelHelpers.export(exports, "loadAllReceipies", ()=>loadAllReceipies
+);
 var _regeneratorRuntime = require("regenerator-runtime");
 var _configJs = require("./config.js");
 var _helpersJs = require("./helpers.js");
 "use strict";
 const state = {
     receipe: {
+    },
+    search: {
+        query: "",
+        results: []
     }
 };
 const loadReceipe = async function(id) {
     try {
         // 1) Fetch recipe from url and validate it
-        const data = await _helpersJs.validateAndGetJson(`${_configJs.API_URL}/${id}`);
+        //returned response from the method is stored
+        const data = await _helpersJs.validateAndGetJson(`${_configJs.API_URL}${id}`);
         //Get the meal object into my receipe variable
         let receipe = data.data.recipe;
         console.log(receipe);
@@ -14937,6 +14961,28 @@ const loadReceipe = async function(id) {
         };
     } catch (error) {
         //Throw error so the controller can catch it
+        throw error;
+    }
+};
+const loadAllReceipies = async function(query) {
+    try {
+        //Store the query in state.query
+        state.search.query = query;
+        //store the promise
+        const data = await _helpersJs.validateAndGetJson(`${_configJs.API_URL}?search=${query}`);
+        console.log(data);
+        //Return a new array with new objects
+        //Then store in the state
+        //Store the data in state.results object
+        state.search.results = data.data.recipes.map((rec)=>{
+            return {
+                id: rec.id,
+                title: rec.title,
+                image: rec.image_url
+            };
+        });
+    } catch (error) {
+        //Throw the error so the controller can catch it
         throw error;
     }
 };
@@ -14979,7 +15025,7 @@ parcelHelpers.export(exports, "API_URL", ()=>API_URL
 parcelHelpers.export(exports, "TIMEOUT_SECS", ()=>TIMEOUT_SECS
 );
 "use strict";
-const API_URL = "https://forkify-api.herokuapp.com/api/v2/recipes";
+const API_URL = "https://forkify-api.herokuapp.com/api/v2/recipes/";
 const TIMEOUT_SECS = 10;
 
 },{"@parcel/transformer-js/src/esmodule-helpers.js":"ciiiV"}],"9RX9R":[function(require,module,exports) {
@@ -15446,6 +15492,31 @@ Fraction.primeFactors = function(n) {
 };
 module.exports.Fraction = Fraction;
 
-},{}]},["19Ls1","lA0Es"], "lA0Es", "parcelRequirec81b")
+},{}],"bqL0U":[function(require,module,exports) {
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+"use strict";
+class SearchResultsView {
+    //Private property
+    //Form element as the parent element
+    #parentEl = document.querySelector(".menu-search-form");
+    //Method to get the value in the input field
+    getQuery() {
+        const queryValue = this.#parentEl.querySelector(".input-item").value;
+        queryValue.value = "";
+    }
+    //Publisher method to the subscriber getAllReceipies
+    addHandlerSearch(handler) {
+        //Event listner handled on the submit event in the entire form
+        this.#parentEl.addEventListener("submit", function(e) {
+            //Prevent default cos otherwise the page will reload on submit...Remember?
+            e.preventDefault();
+            handler();
+        });
+    }
+}
+exports.default = new SearchResultsView();
+
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"ciiiV"}]},["19Ls1","lA0Es"], "lA0Es", "parcelRequirec81b")
 
 //# sourceMappingURL=Index.05cf099e.js.map
