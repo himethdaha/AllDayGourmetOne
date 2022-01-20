@@ -702,6 +702,25 @@ body {
   stroke: #fff;
 }
 
+.btn-dish-bookmarked {
+  background-image: linear-gradient(to right bottom, #fbdb89, #f48982);
+  height: 4rem;
+  width: 4rem;
+  border-radius: 100px;
+  border: none;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.btn-dish-bookmarked:hover {
+  background-image: linear-gradient(to right bottom, #ebcb7a, #e4746c);
+  transform: translateY(-2px);
+}
+
+.bookedmark-icon {
+  stroke: #0ca678;
+}
+
 .dish-ingredients {
   display: flex;
   flex-direction: column;

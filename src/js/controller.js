@@ -94,12 +94,38 @@ const controlServings = function (newServings) {
   receipeView.update(model.state.receipe);
 };
 
+//Controller for adding a new bookmark
+const controlBookmark = function () {
+  //If receipe not bookmarked push it to the array bookmarks
+  if (!model.state.receipe.bookmarked) {
+    model.addBookmark(model.state.receipe);
+    receipeView.render(model.state.receipe);
+  } else {
+    model.removeBookmark(model.state.receipe.id);
+    receipeView.render(model.state.receipe);
+  }
+};
+
+//Controller for adding a new order
+const controlOrder = function () {
+  //If receipe not ordered push it to the orders array
+  if (!model.state.receipe.ordered) {
+    model.addOrder(model.state.receipe);
+    receipeView.render(model.state.receipe);
+  } else {
+    model.removeOrder(model.state.receipe.id);
+    receipeView.render(model.state.receipe);
+  }
+};
+
 //Initialization method
 //Method which executes everything once the page is loaded
 //Publisher Subscriber Pattern
 const init = function () {
   receipeView.addHandlerRender(controlReceipies);
   receipeView.addHandlerServings(controlServings);
+  receipeView.addHandlerAddBookmark(controlBookmark);
+  receipeView.addHandlerAddOrder(controlOrder);
   searchResultsView.addHandlerSearch(getAllReceipies);
   pagination.addhandlerPagination(btnPagination);
 };

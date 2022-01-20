@@ -38,7 +38,7 @@ export default class parentView {
       //If the node content isn't equal AND the firstchild's node value isn't empty, change the text content
       if (
         !newEl.isEqualNode(currEL) &&
-        newEl.firstChild.nodeValue.trim() !== ""
+        newEl.firstChild?.nodeValue?.trim() !== ""
       ) {
         currEL.textContent = newEl.textContent;
       }

@@ -16,6 +16,8 @@ export const state = {
     page: 1,
     resultsPerPage: RES_PER_PAGE,
   },
+  bookmarks: [],
+  orders: [],
 };
 
 //Function to grab the receipe from the API
@@ -38,6 +40,23 @@ export const loadReceipe = async function (id) {
       cookingTime: receipe.cooking_time,
       ingredients: receipe.ingredients,
     };
+    //If the loaded recipie id is the same as the id in one of the objects in the bookmarks array
+    //Doing this so that once bookmarked, it won't be lost
+    if (state.bookmarks.some((bookmark) => bookmark.id === id)) {
+      //Flag that receipie as bookmarked
+      state.receipe.bookmarked = true;
+    } else {
+      //Flag that receipie as NOT bookmarked
+      state.receipe.bookmarked = false;
+    }
+
+    if (state.orders.some((order) => order.id === id)) {
+      //Flag recipie as ordered
+      state.receipe.ordered = true;
+    } else {
+      //Flaf receipe as NOT ordered
+      state.receipe.ordered = false;
+    }
   } catch (error) {
     //Throw error so the controller can catch it
     throw error;
@@ -60,6 +79,8 @@ export const loadAllReceipies = async function (query) {
     state.search.results = data.data.recipes.map((rec) => {
       return { id: rec.id, title: rec.title, image: rec.image_url };
     });
+    //Reset the page property back to one after loading the results
+    state.search.page = 1;
   } catch (error) {
     //Throw the error so the controller can catch it
     throw error;
@@ -89,4 +110,41 @@ export const updateServings = function (newServings) {
 
   //Update the servings in the object
   state.receipe.servings = newServings;
+};
+
+//Function to add bookmark
+//This function will receive a receipie and set it as a bookmark
+export const addBookmark = function (recipe) {
+  //Push recipie to the bookmarks array
+  state.bookmarks.push(recipe);
+  //If recipie same as the one in bookmarks array add new bookmarked property to it. This will help us show the receipie as a bookmark
+  if (recipe.id === state.receipe.id) state.receipe.bookmarked = true;
+};
+
+//Function to remove the bookmar
+export const removeBookmark = function (id) {
+  //To get the index use findIndex as it retrieves the index of the first element that satisfies the condition
+  const index = state.bookmarks.findIndex((el) => el.id === id);
+  //Remove from the bookmarks array
+  state.bookmarks.splice(index, 1);
+  //Remove property booked from current receipie
+  if (id === state.receipe.id) state.receipe.bookmarked = false;
+};
+
+//Function to add orders
+//This function will recieve a receipe and set it as an order
+export const addOrder = function (recipe) {
+  state.orders.push(recipe);
+  //If recipie same as the one in orders array add new ordered property to it. This will help us show the receipie as an order in the view
+  if (recipe.id === state.receipe.id) state.receipe.ordered = true;
+};
+
+//Function to remove orders
+export const removeOrder = function (id) {
+  //Get the id by findIndex
+  const index = state.orders.findIndex((el) => el.id === id);
+  //Splice it in the array
+  state.orders.splice(index, 1);
+  //Remove property ordered from current recipie
+  if (id === state.receipe.id) state.receipe.ordered = false;
 };

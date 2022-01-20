@@ -604,12 +604,36 @@ const controlServings = function(newServings) {
     //Update the view
     _receipeViewJsDefault.default.update(_modelJs.state.receipe);
 };
+//Controller for adding a new bookmark
+const controlBookmark = function() {
+    //If receipe not bookmarked push it to the array bookmarks
+    if (!_modelJs.state.receipe.bookmarked) {
+        _modelJs.addBookmark(_modelJs.state.receipe);
+        _receipeViewJsDefault.default.render(_modelJs.state.receipe);
+    } else {
+        _modelJs.removeBookmark(_modelJs.state.receipe.id);
+        _receipeViewJsDefault.default.render(_modelJs.state.receipe);
+    }
+};
+//Controller for adding a new order
+const controlOrder = function() {
+    //If receipe not ordered push it to the orders array
+    if (!_modelJs.state.receipe.ordered) {
+        _modelJs.addOrder(_modelJs.state.receipe);
+        _receipeViewJsDefault.default.render(_modelJs.state.receipe);
+    } else {
+        _modelJs.removeOrder(_modelJs.state.receipe.id);
+        _receipeViewJsDefault.default.render(_modelJs.state.receipe);
+    }
+};
 //Initialization method
 //Method which executes everything once the page is loaded
 //Publisher Subscriber Pattern
 const init = function() {
     _receipeViewJsDefault.default.addHandlerRender(controlReceipies);
     _receipeViewJsDefault.default.addHandlerServings(controlServings);
+    _receipeViewJsDefault.default.addHandlerAddBookmark(controlBookmark);
+    _receipeViewJsDefault.default.addHandlerAddOrder(controlOrder);
     _searchResultsViewJsDefault.default.addHandlerSearch(getAllReceipies);
     _paginationJsDefault.default.addhandlerPagination(btnPagination);
 };
@@ -1678,6 +1702,14 @@ parcelHelpers.export(exports, "getSearchResultsInPage", ()=>getSearchResultsInPa
 );
 parcelHelpers.export(exports, "updateServings", ()=>updateServings
 );
+parcelHelpers.export(exports, "addBookmark", ()=>addBookmark
+);
+parcelHelpers.export(exports, "removeBookmark", ()=>removeBookmark
+);
+parcelHelpers.export(exports, "addOrder", ()=>addOrder
+);
+parcelHelpers.export(exports, "removeOrder", ()=>removeOrder
+);
 var _regeneratorRuntime = require("regenerator-runtime");
 var _configJs = require("./config.js");
 var _helpersJs = require("./helpers.js");
@@ -1691,7 +1723,9 @@ const state = {
         //For pagination
         page: 1,
         resultsPerPage: _configJs.RES_PER_PAGE
-    }
+    },
+    bookmarks: [],
+    orders: []
 };
 const loadReceipe = async function(id) {
     try {
@@ -1710,6 +1744,18 @@ const loadReceipe = async function(id) {
             cookingTime: receipe.cooking_time,
             ingredients: receipe.ingredients
         };
+        //If the loaded recipie id is the same as the id in one of the objects in the bookmarks array
+        //Doing this so that once bookmarked, it won't be lost
+        if (state.bookmarks.some((bookmark)=>bookmark.id === id
+        )) //Flag that receipie as bookmarked
+        state.receipe.bookmarked = true;
+        else //Flag that receipie as NOT bookmarked
+        state.receipe.bookmarked = false;
+        if (state.orders.some((order)=>order.id === id
+        )) //Flag recipie as ordered
+        state.receipe.ordered = true;
+        else //Flaf receipe as NOT ordered
+        state.receipe.ordered = false;
     } catch (error) {
         //Throw error so the controller can catch it
         throw error;
@@ -1732,6 +1778,8 @@ const loadAllReceipies = async function(query) {
                 image: rec.image_url
             };
         });
+        //Reset the page property back to one after loading the results
+        state.search.page = 1;
     } catch (error) {
         //Throw the error so the controller can catch it
         throw error;
@@ -1755,6 +1803,35 @@ const updateServings = function(newServings) {
     });
     //Update the servings in the object
     state.receipe.servings = newServings;
+};
+const addBookmark = function(recipe) {
+    //Push recipie to the bookmarks array
+    state.bookmarks.push(recipe);
+    //If recipie same as the one in bookmarks array add new bookmarked property to it. This will help us show the receipie as a bookmark
+    if (recipe.id === state.receipe.id) state.receipe.bookmarked = true;
+};
+const removeBookmark = function(id) {
+    //To get the index use findIndex as it retrieves the index of the first element that satisfies the condition
+    const index = state.bookmarks.findIndex((el)=>el.id === id
+    );
+    //Remove from the bookmarks array
+    state.bookmarks.splice(index, 1);
+    //Remove property booked from current receipie
+    if (id === state.receipe.id) state.receipe.bookmarked = false;
+};
+const addOrder = function(recipe) {
+    state.orders.push(recipe);
+    //If recipie same as the one in orders array add new ordered property to it. This will help us show the receipie as an order in the view
+    if (recipe.id === state.receipe.id) state.receipe.ordered = true;
+};
+const removeOrder = function(id) {
+    //Get the id by findIndex
+    const index = state.orders.findIndex((el)=>el.id === id
+    );
+    //Splice it in the array
+    state.orders.splice(index, 1);
+    //Remove property ordered from current recipie
+    if (id === state.receipe.id) state.receipe.ordered = false;
 };
 
 },{"regenerator-runtime":"dXNgZ","./config.js":"k5Hzs","./helpers.js":"hGI1E","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"dXNgZ":[function(require,module,exports) {
@@ -2451,6 +2528,22 @@ class ReceipeView extends _parentViewJsDefault.default {
             if (updateServings > 0) handler(updateServings);
         });
     }
+    //Method to listen for clicks from the bookmark button
+    addHandlerAddBookmark(handler) {
+        this._parentElement.addEventListener("click", function(e) {
+            const click = e.target.closest(".btn-dish-bookmark");
+            if (!click) return;
+            handler();
+        });
+    }
+    //Method to listen for clicks from the order button
+    addHandlerAddOrder(handler) {
+        this._parentElement.addEventListener("click", function(e) {
+            const click = e.target.closest(".btn-order");
+            if (!click) return;
+            handler();
+        });
+    }
     //Private method to render the HTMLMarkup
     _generateMarkup() {
         return `
@@ -2548,7 +2641,7 @@ class ReceipeView extends _parentViewJsDefault.default {
       </div>
       <!--Button to add the dish as a bookmark-->
       <button class="btn-dish-bookmark">
-        <svg xmlns="http://www.w3.org/2000/svg"  viewBox="0 0 256 256" class="bookmark-dish-icon"><rect width="256" height="256" fill="none"></rect><path d="M192,224l-64-40L64,224V48a8,8,0,0,1,8-8H184a8,8,0,0,1,8,8Z" fill="none"  stroke-linecap="round" stroke-linejoin="round" stroke-width="24"></path></svg>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" ${this._data.bookmarked ? 'class="bookedmark-icon"' : 'class="bookmark-dish-icon"'}><rect width="256" height="256" fill="none"></rect><path d="M192,224l-64-40L64,224V48a8,8,0,0,1,8-8H184a8,8,0,0,1,8,8Z" fill="none"  stroke-linecap="round" stroke-linejoin="round" stroke-width="24"></path></svg>
       </button>
     </div>
   </div>
@@ -2568,7 +2661,8 @@ class ReceipeView extends _parentViewJsDefault.default {
     <!--Button to make an Order-->
     <div class="order-btn-flex">
     <button class="btn-order">
-      <span class="order-text">Order</span>
+    ${this._data.ordered ? '<span class="order-text">Remove Order</span>' : '<span class="order-text">Order</span>'}
+      
     </button>
   </div>
   </div>
@@ -2612,7 +2706,7 @@ class parentView {
             const currEL = currentElements[i];
             //CHANGE text content
             //If the node content isn't equal AND the firstchild's node value isn't empty, change the text content
-            if (!newEl.isEqualNode(currEL) && newEl.firstChild.nodeValue.trim() !== "") currEL.textContent = newEl.textContent;
+            if (!newEl.isEqualNode(currEL) && newEl.firstChild?.nodeValue?.trim() !== "") currEL.textContent = newEl.textContent;
             //CHANGE attributes
             //change the data values of the quantity buttons
             if (!newEl.isEqualNode(currEL)) //Get the attributes of the dissimilar nodes

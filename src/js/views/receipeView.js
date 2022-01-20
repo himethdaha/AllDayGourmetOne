@@ -30,6 +30,24 @@ class ReceipeView extends parentView {
     });
   }
 
+  //Method to listen for clicks from the bookmark button
+  addHandlerAddBookmark(handler) {
+    this._parentElement.addEventListener("click", function (e) {
+      const click = e.target.closest(".btn-dish-bookmark");
+      if (!click) return;
+      handler();
+    });
+  }
+
+  //Method to listen for clicks from the order button
+  addHandlerAddOrder(handler) {
+    this._parentElement.addEventListener("click", function (e) {
+      const click = e.target.closest(".btn-order");
+      if (!click) return;
+      handler();
+    });
+  }
+
   //Private method to render the HTMLMarkup
   _generateMarkup() {
     return `
@@ -135,7 +153,11 @@ class ReceipeView extends parentView {
       </div>
       <!--Button to add the dish as a bookmark-->
       <button class="btn-dish-bookmark">
-        <svg xmlns="http://www.w3.org/2000/svg"  viewBox="0 0 256 256" class="bookmark-dish-icon"><rect width="256" height="256" fill="none"></rect><path d="M192,224l-64-40L64,224V48a8,8,0,0,1,8-8H184a8,8,0,0,1,8,8Z" fill="none"  stroke-linecap="round" stroke-linejoin="round" stroke-width="24"></path></svg>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" ${
+          this._data.bookmarked
+            ? 'class="bookedmark-icon"'
+            : 'class="bookmark-dish-icon"'
+        }><rect width="256" height="256" fill="none"></rect><path d="M192,224l-64-40L64,224V48a8,8,0,0,1,8-8H184a8,8,0,0,1,8,8Z" fill="none"  stroke-linecap="round" stroke-linejoin="round" stroke-width="24"></path></svg>
       </button>
     </div>
   </div>
@@ -161,7 +183,12 @@ class ReceipeView extends parentView {
     <!--Button to make an Order-->
     <div class="order-btn-flex">
     <button class="btn-order">
-      <span class="order-text">Order</span>
+    ${
+      this._data.ordered
+        ? '<span class="order-text">Remove Order</span>'
+        : '<span class="order-text">Order</span>'
+    }
+      
     </button>
   </div>
   </div>
