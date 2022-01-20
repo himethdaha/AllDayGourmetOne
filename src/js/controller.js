@@ -9,6 +9,10 @@ import searchResultsView from "./views/searchResultsView.js";
 import asideResultsView from "./views/asideResultsView.js";
 //Importing the view for the pagination buttons
 import pagination from "./views/pagination.js";
+//Importing the BookMarksView
+import bookmarksView from "./views/bookmarksView.js";
+//Importing the OrdersView
+import ordersView from "./views/ordersView.js";
 ("use strict");
 //Import from model
 
@@ -50,10 +54,13 @@ const controlReceipies = async function () {
     //ReceipeView object will render and store this data in itself
     //Get all the data from step 1 and pass it into the render method
     receipeView.render(model.state.receipe);
+    bookmarksView.update(model.state.bookmarks);
+    ordersView.update(model.state.orders);
   } catch (error) {
     //Rendering the error
     //No need to pass the error message, cos the receipeView should handle all things related to the UI
     receipeView.renderError();
+    console.error(error);
   }
 };
 
@@ -100,9 +107,13 @@ const controlBookmark = function () {
   if (!model.state.receipe.bookmarked) {
     model.addBookmark(model.state.receipe);
     receipeView.render(model.state.receipe);
+    //Render the bookmarks when hovering over bookmarks button
+    bookmarksView.render(model.state.bookmarks);
   } else {
     model.removeBookmark(model.state.receipe.id);
     receipeView.render(model.state.receipe);
+    //Render the bookmarks when hovering over bookmarks button
+    bookmarksView.render(model.state.bookmarks);
   }
 };
 
@@ -112,16 +123,30 @@ const controlOrder = function () {
   if (!model.state.receipe.ordered) {
     model.addOrder(model.state.receipe);
     receipeView.render(model.state.receipe);
+    ordersView.render(model.state.orders);
   } else {
     model.removeOrder(model.state.receipe.id);
     receipeView.render(model.state.receipe);
+    ordersView.render(model.state.orders);
   }
+};
+
+//Controller to render all bookmarks when the page loads
+const controlBookmarksRender = function () {
+  bookmarksView.render(model.state.bookmarks);
+};
+
+//Controller to render all orders when the page loads
+const controlOrdersRender = function () {
+  ordersView.render(model.state.orders);
 };
 
 //Initialization method
 //Method which executes everything once the page is loaded
 //Publisher Subscriber Pattern
 const init = function () {
+  bookmarksView.addHandlerRenderBookMarks(controlBookmarksRender);
+  ordersView.addHandlerOrdersRender(controlOrdersRender);
   receipeView.addHandlerRender(controlReceipies);
   receipeView.addHandlerServings(controlServings);
   receipeView.addHandlerAddBookmark(controlBookmark);

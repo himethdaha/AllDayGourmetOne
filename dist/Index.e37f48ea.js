@@ -536,6 +536,12 @@ var _asideResultsViewJsDefault = parcelHelpers.interopDefault(_asideResultsViewJ
 //Importing the view for the pagination buttons
 var _paginationJs = require("./views/pagination.js");
 var _paginationJsDefault = parcelHelpers.interopDefault(_paginationJs);
+//Importing the BookMarksView
+var _bookmarksViewJs = require("./views/bookmarksView.js");
+var _bookmarksViewJsDefault = parcelHelpers.interopDefault(_bookmarksViewJs);
+//Importing the OrdersView
+var _ordersViewJs = require("./views/ordersView.js");
+var _ordersViewJsDefault = parcelHelpers.interopDefault(_ordersViewJs);
 //Polyfilling asyn/await
 var _runtime = require("regenerator-runtime/runtime");
 "use strict";
@@ -564,10 +570,13 @@ const controlReceipies = async function() {
         //ReceipeView object will render and store this data in itself
         //Get all the data from step 1 and pass it into the render method
         _receipeViewJsDefault.default.render(_modelJs.state.receipe);
+        _bookmarksViewJsDefault.default.update(_modelJs.state.bookmarks);
+        _ordersViewJsDefault.default.update(_modelJs.state.orders);
     } catch (error) {
         //Rendering the error
         //No need to pass the error message, cos the receipeView should handle all things related to the UI
         _receipeViewJsDefault.default.renderError();
+        console.error(error);
     }
 };
 //Function to get all the searched receipies
@@ -610,9 +619,13 @@ const controlBookmark = function() {
     if (!_modelJs.state.receipe.bookmarked) {
         _modelJs.addBookmark(_modelJs.state.receipe);
         _receipeViewJsDefault.default.render(_modelJs.state.receipe);
+        //Render the bookmarks when hovering over bookmarks button
+        _bookmarksViewJsDefault.default.render(_modelJs.state.bookmarks);
     } else {
         _modelJs.removeBookmark(_modelJs.state.receipe.id);
         _receipeViewJsDefault.default.render(_modelJs.state.receipe);
+        //Render the bookmarks when hovering over bookmarks button
+        _bookmarksViewJsDefault.default.render(_modelJs.state.bookmarks);
     }
 };
 //Controller for adding a new order
@@ -621,15 +634,27 @@ const controlOrder = function() {
     if (!_modelJs.state.receipe.ordered) {
         _modelJs.addOrder(_modelJs.state.receipe);
         _receipeViewJsDefault.default.render(_modelJs.state.receipe);
+        _ordersViewJsDefault.default.render(_modelJs.state.orders);
     } else {
         _modelJs.removeOrder(_modelJs.state.receipe.id);
         _receipeViewJsDefault.default.render(_modelJs.state.receipe);
+        _ordersViewJsDefault.default.render(_modelJs.state.orders);
     }
+};
+//Controller to render all bookmarks when the page loads
+const controlBookmarksRender = function() {
+    _bookmarksViewJsDefault.default.render(_modelJs.state.bookmarks);
+};
+//Controller to render all orders when the page loads
+const controlOrdersRender = function() {
+    _ordersViewJsDefault.default.render(_modelJs.state.orders);
 };
 //Initialization method
 //Method which executes everything once the page is loaded
 //Publisher Subscriber Pattern
 const init = function() {
+    _bookmarksViewJsDefault.default.addHandlerRenderBookMarks(controlBookmarksRender);
+    _ordersViewJsDefault.default.addHandlerOrdersRender(controlOrdersRender);
     _receipeViewJsDefault.default.addHandlerRender(controlReceipies);
     _receipeViewJsDefault.default.addHandlerServings(controlServings);
     _receipeViewJsDefault.default.addHandlerAddBookmark(controlBookmark);
@@ -639,7 +664,7 @@ const init = function() {
 };
 init();
 
-},{"core-js/modules/web.immediate.js":"49tUX","./model.js":"Y4A21","regenerator-runtime":"dXNgZ","./views/receipeView.js":"inPdx","./views/searchResultsView.js":"cXIN2","./views/asideResultsView.js":"hGOwx","./views/pagination.js":"lOFRU","regenerator-runtime/runtime":"dXNgZ","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"49tUX":[function(require,module,exports) {
+},{"core-js/modules/web.immediate.js":"49tUX","./model.js":"Y4A21","regenerator-runtime":"dXNgZ","./views/receipeView.js":"inPdx","./views/searchResultsView.js":"cXIN2","./views/asideResultsView.js":"hGOwx","./views/pagination.js":"lOFRU","./views/bookmarksView.js":"4Lqzq","./views/ordersView.js":"16RgA","regenerator-runtime/runtime":"dXNgZ","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"49tUX":[function(require,module,exports) {
 var $ = require('../internals/export');
 var global = require('../internals/global');
 var task = require('../internals/task');
@@ -1734,7 +1759,6 @@ const loadReceipe = async function(id) {
         const data = await _helpersJs.validateAndGetJson(`${_configJs.API_URL}${id}`);
         //Get the meal object into my receipe variable
         let receipe = data.data.recipe;
-        console.log(receipe);
         //Create the receipe Object from the receipe variable
         state.receipe = {
             id: receipe.id,
@@ -1767,7 +1791,6 @@ const loadAllReceipies = async function(query) {
         state.search.query = query;
         //store the promise
         const data = await _helpersJs.validateAndGetJson(`${_configJs.API_URL}?search=${query}`);
-        console.log(data);
         //Return a new array with new objects
         //Then store in the state
         //Store the data in state.results object
@@ -1804,11 +1827,20 @@ const updateServings = function(newServings) {
     //Update the servings in the object
     state.receipe.servings = newServings;
 };
+//Function to store bookmarks in the local storage
+const storeBookmarks = function() {
+    localStorage.setItem("bookmarks", JSON.stringify(state.bookmarks));
+};
+//Function to store orders in the local storage
+const storeOrders = function() {
+    localStorage.setItem("orders", JSON.stringify(state.orders));
+};
 const addBookmark = function(recipe) {
     //Push recipie to the bookmarks array
     state.bookmarks.push(recipe);
     //If recipie same as the one in bookmarks array add new bookmarked property to it. This will help us show the receipie as a bookmark
     if (recipe.id === state.receipe.id) state.receipe.bookmarked = true;
+    storeBookmarks();
 };
 const removeBookmark = function(id) {
     //To get the index use findIndex as it retrieves the index of the first element that satisfies the condition
@@ -1818,11 +1850,13 @@ const removeBookmark = function(id) {
     state.bookmarks.splice(index, 1);
     //Remove property booked from current receipie
     if (id === state.receipe.id) state.receipe.bookmarked = false;
+    storeBookmarks();
 };
 const addOrder = function(recipe) {
     state.orders.push(recipe);
     //If recipie same as the one in orders array add new ordered property to it. This will help us show the receipie as an order in the view
     if (recipe.id === state.receipe.id) state.receipe.ordered = true;
+    storeOrders();
 };
 const removeOrder = function(id) {
     //Get the id by findIndex
@@ -1832,7 +1866,22 @@ const removeOrder = function(id) {
     state.orders.splice(index, 1);
     //Remove property ordered from current recipie
     if (id === state.receipe.id) state.receipe.ordered = false;
+    storeOrders();
 };
+//Initializer function to get the values from the storage
+const init = function() {
+    //Get the bookmarks string and convert it back to an object
+    const bookmarkStore = localStorage.getItem("bookmarks");
+    //Get the orders string and convert it back to an object
+    const orderStore = localStorage.getItem("orders");
+    //If there are stored bookmarks
+    if (bookmarkStore) //Parse the string and store it in the state
+    state.bookmarks = JSON.parse(bookmarkStore);
+    //If there are stored orders
+    if (orderStore) //Parse the string and store it in the state
+    state.orders = JSON.parse(orderStore);
+};
+init();
 
 },{"regenerator-runtime":"dXNgZ","./config.js":"k5Hzs","./helpers.js":"hGI1E","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"dXNgZ":[function(require,module,exports) {
 /**
@@ -3115,6 +3164,80 @@ class Pagination extends _parentViewJsDefault.default {
     }
 }
 exports.default = new Pagination();
+
+},{"./parentView.js":"gtzxk","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"4Lqzq":[function(require,module,exports) {
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+var _parentViewJs = require("./parentView.js");
+var _parentViewJsDefault = parcelHelpers.interopDefault(_parentViewJs);
+"use strict";
+class BookMarksView extends _parentViewJsDefault.default {
+    //Adding the parent element
+    _parentElement = document.querySelector(".bookmarks-list");
+    _errorMessage = "No bookmarks yet. Bookmark your favourite meals to order them again! 🙂";
+    //Event listener to load all bookmarks when the page is loaded
+    addHandlerRenderBookMarks(handler) {
+        window.addEventListener("load", handler);
+    }
+    _generateMarkup() {
+        //get the id
+        const id = window.location.hash.slice(1);
+        //data returns an array of strings
+        //Therefore got to join
+        return this._data.map((result)=>{
+            return `
+        <li class="result-preview">
+        <a href="#${result.id}" class="result-preview-link ${result.id === id ? "active-preview" : ""}">
+        <figure class="result-preview-figure">
+            <img src="${result.image}" alt="${result.title}" class="result-preview-img">
+        </figure>
+        <div class="result-preview-description">
+            <h4 class="result-preview-title">${result.title}</h4>
+        </div>
+        </a>
+  </li>
+         `;
+        }).join("");
+    }
+}
+exports.default = new BookMarksView();
+
+},{"./parentView.js":"gtzxk","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"16RgA":[function(require,module,exports) {
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+var _parentViewJs = require("./parentView.js");
+var _parentViewJsDefault = parcelHelpers.interopDefault(_parentViewJs);
+"use strict";
+class OrdersView extends _parentViewJsDefault.default {
+    //Adding the parent element
+    _parentElement = document.querySelector(".orders-list");
+    _errorMessage = "No orders yet. Get to ordering your cravings 🤤";
+    //Event listener to load all orders in storage when the page loads
+    addHandlerOrdersRender(handler) {
+        window.addEventListener("load", handler);
+    }
+    _generateMarkup() {
+        //get the id
+        const id = window.location.hash.slice(1);
+        //data returns an array of strings
+        //Therefore got to join
+        return this._data.map((result)=>{
+            return `
+        <li class="result-preview">
+        <a href="#${result.id}" class="result-preview-link ${result.id === id ? "active-preview" : ""}">
+        <figure class="result-preview-figure">
+            <img src="${result.image}" alt="${result.title}" class="result-preview-img">
+        </figure>
+        <div class="result-preview-description">
+            <h4 class="result-preview-title">${result.title}</h4>
+        </div>
+        </a>
+  </li>
+         `;
+        }).join("");
+    }
+}
+exports.default = new OrdersView();
 
 },{"./parentView.js":"gtzxk","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}]},["ddCAb","aenu9"], "aenu9", "parcelRequirec81b")
 

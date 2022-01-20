@@ -29,7 +29,6 @@ export const loadReceipe = async function (id) {
     const data = await validateAndGetJson(`${API_URL}${id}`);
     //Get the meal object into my receipe variable
     let receipe = data.data.recipe;
-    console.log(receipe);
 
     //Create the receipe Object from the receipe variable
     state.receipe = {
@@ -71,7 +70,6 @@ export const loadAllReceipies = async function (query) {
 
     //store the promise
     const data = await validateAndGetJson(`${API_URL}?search=${query}`);
-    console.log(data);
 
     //Return a new array with new objects
     //Then store in the state
@@ -112,6 +110,16 @@ export const updateServings = function (newServings) {
   state.receipe.servings = newServings;
 };
 
+//Function to store bookmarks in the local storage
+const storeBookmarks = function () {
+  localStorage.setItem("bookmarks", JSON.stringify(state.bookmarks));
+};
+
+//Function to store orders in the local storage
+const storeOrders = function () {
+  localStorage.setItem("orders", JSON.stringify(state.orders));
+};
+
 //Function to add bookmark
 //This function will receive a receipie and set it as a bookmark
 export const addBookmark = function (recipe) {
@@ -119,6 +127,7 @@ export const addBookmark = function (recipe) {
   state.bookmarks.push(recipe);
   //If recipie same as the one in bookmarks array add new bookmarked property to it. This will help us show the receipie as a bookmark
   if (recipe.id === state.receipe.id) state.receipe.bookmarked = true;
+  storeBookmarks();
 };
 
 //Function to remove the bookmar
@@ -129,6 +138,7 @@ export const removeBookmark = function (id) {
   state.bookmarks.splice(index, 1);
   //Remove property booked from current receipie
   if (id === state.receipe.id) state.receipe.bookmarked = false;
+  storeBookmarks();
 };
 
 //Function to add orders
@@ -137,6 +147,7 @@ export const addOrder = function (recipe) {
   state.orders.push(recipe);
   //If recipie same as the one in orders array add new ordered property to it. This will help us show the receipie as an order in the view
   if (recipe.id === state.receipe.id) state.receipe.ordered = true;
+  storeOrders();
 };
 
 //Function to remove orders
@@ -147,4 +158,28 @@ export const removeOrder = function (id) {
   state.orders.splice(index, 1);
   //Remove property ordered from current recipie
   if (id === state.receipe.id) state.receipe.ordered = false;
+  storeOrders();
 };
+
+//Initializer function to get the values from the storage
+const init = function () {
+  //Get the bookmarks string and convert it back to an object
+  const bookmarkStore = localStorage.getItem("bookmarks");
+
+  //Get the orders string and convert it back to an object
+  const orderStore = localStorage.getItem("orders");
+
+  //If there are stored bookmarks
+  if (bookmarkStore) {
+    //Parse the string and store it in the state
+    state.bookmarks = JSON.parse(bookmarkStore);
+  }
+
+  //If there are stored orders
+  if (orderStore) {
+    //Parse the string and store it in the state
+    state.orders = JSON.parse(orderStore);
+  }
+};
+
+init();

@@ -216,6 +216,41 @@
             </form>
             <!--Buttons for comments and bookmarks-->
             <div class="btn-extras">
+              <button type="button" class="btn-extra view-orders">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 256 256"
+                  class="svg-extra"
+                >
+                  <rect width="256" height="256" fill="none"></rect>
+                  <rect
+                    x="32"
+                    y="72"
+                    width="192"
+                    height="144"
+                    rx="8"
+                    fill="none"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="24"
+                  ></rect>
+                  <path
+                    d="M88,104V72a40,40,0,0,1,80,0v32"
+                    fill="none"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="24"
+                  ></path>
+                </svg>
+                Orders
+              </button>
+              <div class="orders-box">
+                <ul class="orders-list order-list">
+                  <span class="error-message-text"
+                    >No orders yet. Get to ordering your cravings 🤤</span
+                  >
+                </ul>
+              </div>
               <button type="button" class="btn-extra add-comments">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -250,6 +285,14 @@
                 </svg>
                 Bookmarks
               </button>
+              <div class="bookmarks-box">
+                <ul class="bookmarks-list order-list">
+                  <span class="error-message-text"
+                    >No bookmarks yet. Bookmark your favourite meals to order
+                    them again! 🙂</span
+                  >
+                </ul>
+              </div>
             </div>
           </div>
           <!--Grid for aside and searched results-->
