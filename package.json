@@ -4,7 +4,7 @@
   "description": "Food Delivery App",
   "default": "Index.html",
   "scripts": {
-    "start": "parcel serve Index.html",
+    "start": "parcel Index.html",
     "build": "parcel build Index.html --dist-dir ./dir"
   },
   "repository": {
