@@ -542,11 +542,14 @@ var _bookmarksViewJsDefault = parcelHelpers.interopDefault(_bookmarksViewJs);
 //Importing the OrdersView
 var _ordersViewJs = require("./views/ordersView.js");
 var _ordersViewJsDefault = parcelHelpers.interopDefault(_ordersViewJs);
+//Import commentBox view
+var _commentBoxViewJs = require("./views/commentBoxView.js");
+var _commentBoxViewJsDefault = parcelHelpers.interopDefault(_commentBoxViewJs);
 //Polyfilling asyn/await
 var _runtime = require("regenerator-runtime/runtime");
+var _parentViewJs = require("./views/parentView.js");
+var _parentViewJsDefault = parcelHelpers.interopDefault(_parentViewJs);
 "use strict";
-//Implementing parcels HMR
-if (module.hot) module.hot.accept();
 const parentElement = document.querySelector(".searched-item");
 //Function to get a receipe
 //handler function in subscriber-publisher design pattern
@@ -649,6 +652,16 @@ const controlBookmarksRender = function() {
 const controlOrdersRender = function() {
     _ordersViewJsDefault.default.render(_modelJs.state.orders);
 };
+//Controller to get the comments
+const controlComments = function(comments) {
+    console.log(comments);
+};
+const callSecond = function(handler) {
+    handler();
+};
+const callTestimonials = function() {
+    testimonialLoad();
+};
 //Initialization method
 //Method which executes everything once the page is loaded
 //Publisher Subscriber Pattern
@@ -661,10 +674,11 @@ const init = function() {
     _receipeViewJsDefault.default.addHandlerAddOrder(controlOrder);
     _searchResultsViewJsDefault.default.addHandlerSearch(getAllReceipies);
     _paginationJsDefault.default.addhandlerPagination(btnPagination);
+    _commentBoxViewJsDefault.default.addHandlerFormValues(controlComments);
 };
 init();
 
-},{"core-js/modules/web.immediate.js":"49tUX","./model.js":"Y4A21","regenerator-runtime":"dXNgZ","./views/receipeView.js":"inPdx","./views/searchResultsView.js":"cXIN2","./views/asideResultsView.js":"hGOwx","./views/pagination.js":"lOFRU","./views/bookmarksView.js":"4Lqzq","./views/ordersView.js":"16RgA","regenerator-runtime/runtime":"dXNgZ","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"49tUX":[function(require,module,exports) {
+},{"core-js/modules/web.immediate.js":"49tUX","./model.js":"Y4A21","regenerator-runtime":"dXNgZ","./views/receipeView.js":"inPdx","./views/searchResultsView.js":"cXIN2","./views/asideResultsView.js":"hGOwx","./views/pagination.js":"lOFRU","./views/bookmarksView.js":"4Lqzq","./views/ordersView.js":"16RgA","./views/commentBoxView.js":"cHU3Q","regenerator-runtime/runtime":"dXNgZ","./views/parentView.js":"gtzxk","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"49tUX":[function(require,module,exports) {
 var $ = require('../internals/export');
 var global = require('../internals/global');
 var task = require('../internals/task');
@@ -2556,6 +2570,14 @@ class ReceipeView extends _parentViewJsDefault.default {
     //Prierty to be inherted by other classes
     _parentElement = document.querySelector(".searched-item");
     _errorMessage = "Sorry, Could not find what you are looking for. Please try Again! 🥺";
+    _closeBtn = document.querySelector(".close-bookmark");
+    _bookmarkBox = document.querySelector(".bookmarks-box");
+    _bookmarks = document.querySelector(".bookmark-item");
+    constructor(){
+        super();
+        this._addHandlerOpenBookmark();
+        this._addHandlerCloseBookmark();
+    }
     //Method as the Publisher. Therefore, needs access to the subscriber (handler function)
     //Rendering the receipe right in the beginning
     //Needs to be public to call in the controller
@@ -2566,6 +2588,15 @@ class ReceipeView extends _parentViewJsDefault.default {
         ].forEach((ev)=>{
             window.addEventListener(ev, handler);
         });
+    }
+    toggleWindow() {
+        this._bookmarkBox.classList.toggle("hidden");
+    }
+    _addHandlerOpenBookmark() {
+        this._bookmarks.addEventListener("click", this.toggleWindow.bind(this));
+    }
+    _addHandlerCloseBookmark() {
+        this._closeBtn.addEventListener("click", this.toggleWindow.bind(this));
     }
     //Method to listen for clicks in the quantity increase / decrease buttons
     addHandlerServings(handler) {
@@ -3212,6 +3243,23 @@ class OrdersView extends _parentViewJsDefault.default {
     //Adding the parent element
     _parentElement = document.querySelector(".orders-list");
     _errorMessage = "No orders yet. Get to ordering your cravings 🤤";
+    _closeBtn = document.querySelector(".close-order");
+    _orderBox = document.querySelector(".orders-box");
+    _orders = document.querySelector(".view-orders");
+    constructor(){
+        super();
+        this._addHandlerOpenOrder();
+        this._addHandlerCloseOrder();
+    }
+    toggleWindow() {
+        this._orderBox.classList.toggle("hidden");
+    }
+    _addHandlerOpenOrder() {
+        this._orders.addEventListener("click", this.toggleWindow.bind(this));
+    }
+    _addHandlerCloseOrder() {
+        this._closeBtn.addEventListener("click", this.toggleWindow.bind(this));
+    }
     //Event listener to load all orders in storage when the page loads
     addHandlerOrdersRender(handler) {
         window.addEventListener("load", handler);
@@ -3238,6 +3286,54 @@ class OrdersView extends _parentViewJsDefault.default {
     }
 }
 exports.default = new OrdersView();
+
+},{"./parentView.js":"gtzxk","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"cHU3Q":[function(require,module,exports) {
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+var _parentViewJs = require("./parentView.js");
+var _parentViewJsDefault = parcelHelpers.interopDefault(_parentViewJs);
+class CommentBoxView extends _parentViewJsDefault.default {
+    //Properties to be uses
+    _parentElement = document.querySelector(".form-upload");
+    _overlay = document.querySelector(".blured");
+    _commentBox = document.querySelector(".comment-box");
+    _openBtn = document.querySelector(".add-comments");
+    _closeBtn = document.querySelector(".close-btn");
+    constructor(){
+        super();
+        this._addHandlerOpen();
+        this._addHandlerClose();
+    }
+    toggleWindow() {
+        this._overlay.classList.toggle("hidden");
+        this._commentBox.classList.toggle("hidden");
+    }
+    //Addhandler for open btn
+    _addHandlerOpen() {
+        this._openBtn.addEventListener("click", this.toggleWindow.bind(this));
+    }
+    //Addhandler for the close btn
+    _addHandlerClose() {
+        this._closeBtn.addEventListener("click", this.toggleWindow.bind(this));
+        this._overlay.addEventListener("click", this.toggleWindow.bind(this));
+    }
+    //Handler to get the values from the form
+    addHandlerFormValues(handler) {
+        this._parentElement.addEventListener("submit", function(e) {
+            e.preventDefault();
+            //Get the data and store it in an array
+            //FormData constructor takes in a form. Therfore, we use the this keyword which is the parentElement uplaodForm
+            const dataArr = [
+                ...new FormData(this)
+            ];
+            const data = Object.fromEntries(dataArr);
+            handler(data);
+        });
+    }
+    _generateMarkup() {
+    }
+}
+exports.default = new CommentBoxView();
 
 },{"./parentView.js":"gtzxk","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}]},["ddCAb","aenu9"], "aenu9", "parcelRequirec81b")
 

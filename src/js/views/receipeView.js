@@ -9,6 +9,15 @@ class ReceipeView extends parentView {
   _parentElement = document.querySelector(".searched-item");
   _errorMessage =
     "Sorry, Could not find what you are looking for. Please try Again! 🥺";
+  _closeBtn = document.querySelector(".close-bookmark");
+  _bookmarkBox = document.querySelector(".bookmarks-box");
+  _bookmarks = document.querySelector(".bookmark-item");
+
+  constructor() {
+    super();
+    this._addHandlerOpenBookmark();
+    this._addHandlerCloseBookmark();
+  }
 
   //Method as the Publisher. Therefore, needs access to the subscriber (handler function)
   //Rendering the receipe right in the beginning
@@ -17,6 +26,17 @@ class ReceipeView extends parentView {
     ["hashchange", "load"].forEach((ev) => {
       window.addEventListener(ev, handler);
     });
+  }
+
+  toggleWindow() {
+    this._bookmarkBox.classList.toggle("hidden");
+  }
+
+  _addHandlerOpenBookmark() {
+    this._bookmarks.addEventListener("click", this.toggleWindow.bind(this));
+  }
+  _addHandlerCloseBookmark() {
+    this._closeBtn.addEventListener("click", this.toggleWindow.bind(this));
   }
 
   //Method to listen for clicks in the quantity increase / decrease buttons

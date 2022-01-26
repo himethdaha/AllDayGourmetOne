@@ -1,6 +1,7 @@
-"use strict";
+("use strict");
 
 //Get all the individual testimonials
+
 const testimonials = document.querySelectorAll(".test");
 const btnRight = document.querySelector(".btn--right");
 const btnLeft = document.querySelector(".btn--left");
@@ -16,6 +17,7 @@ testimonials.forEach((element, index) => {
 });
 
 //Button right functionality
+
 btnRight.addEventListener("click", function () {
   //Check if the currentSlide is at the last slide
   //maxSlides.length = 3, currSlide is '0' based. That's why i gotta subtract 1

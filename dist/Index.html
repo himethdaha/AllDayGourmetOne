@@ -13,10 +13,10 @@
     <link rel="icon" href="/icon.3071871b.png" type="image/x-icon">
     <link rel="stylesheet" href="/Index.3a01df49.css">
     <script defer="" src="https://unpkg.com/phosphor-icons"></script>
-    <!-- <script defer src="./src/jsscript.js"></script> -->
-    <script defer="" src="/Index.e37f48ea.js"></script>
+    <script src="/Index.e37f48ea.js" defer=""></script>
   </head>
   <body class="container">
+    <div class="blured hidden"></div>
     <!--Title and navbar-->
     <header class="header">
       <section class="title-and-logo">
@@ -151,7 +151,8 @@
                 </svg>
                 Orders
               </button>
-              <div class="orders-box">
+              <div class="orders-box hidden">
+                <button class="close-order">&times;</button>
                 <ul class="orders-list order-list">
                   <span class="error-message-text">No orders yet. Get to ordering your cravings 🤤</span>
                 </ul>
@@ -170,7 +171,8 @@
                 </svg>
                 Bookmarks
               </button>
-              <div class="bookmarks-box">
+              <div class="bookmarks-box hidden">
+                <button class="close-bookmark">&times;</button>
                 <ul class="bookmarks-list order-list">
                   <span class="error-message-text">No bookmarks yet. Bookmark your favourite meals to order
                     them again! 🙂</span>
@@ -224,6 +226,33 @@
                 </div>
                 <span class="message-text">Enter a Food Items name and we'll search everything available
                   for you!</span>
+              </div>
+              <div class="comment-box hidden">
+                <button class="close-comment-btn close-btn">x</button>
+                <form class="upload-comments form-upload">
+                  <div class="form-column">
+                    <h3 class="form-title">Comments</h3>
+                    <label class="form-label">Name</label>
+                    <input type="text" name="cust-name" class="form-input" placeholder="Son Goku">
+                    <label class="form-label">Preferences</label>
+                    <input type="text" name="preferences" class="form-input" placeholder="Add a little bit more cheese pls :)">
+                    <label class="form-label">Allergies</label>
+                    <input type="text" name="allergies" class="form-input" placeholder="I will die if I eat peanuts 😵">
+                    <label class="form-label">Delivery</label>
+                    <input type="text" name="delivery" class="form-input" placeholder="Please Leave at front door..">
+                    <label class="form-label">Other</label>
+                    <input type="text" name="other" class="form-input" placeholder="Best food I've ever had!!">
+                  </div>
+                  <button type="submit" class="submit-comment comment-btn">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewbox="0 0 256 256" class="submit-icon">
+                      <rect width="256" height="256" fill="none"></rect>
+                      <polyline points="86 82 128 40 170 82" fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="24"></polyline>
+                      <line x1="128" y1="152" x2="128" y2="40" fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="24"></line>
+                      <path d="M216,152v56a8,8,0,0,1-8,8H48a8,8,0,0,1-8-8V152" fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="24"></path>
+                    </svg>
+                    <!-- <span class="submit-text">Submit</span> -->
+                  </button>
+                </form>
               </div>
               <!-- <button class="btn-dish-bookmark">
                 <svg
@@ -574,6 +603,7 @@
         </div>
       </section>
     </footer>
-    <!--Ion Icon modules-->
   </body>
+  <!-- <script defer type="module" src="./src/js/controller.js"></script> -->
+  <!-- <script type="text/javascript" src="./src/js/script.js"></script> -->
 </html>

@@ -13,6 +13,9 @@ import pagination from "./views/pagination.js";
 import bookmarksView from "./views/bookmarksView.js";
 //Importing the OrdersView
 import ordersView from "./views/ordersView.js";
+//Import commentBox view
+import commentBoxView from "./views/commentBoxView.js";
+
 ("use strict");
 //Import from model
 
@@ -20,17 +23,12 @@ import ordersView from "./views/ordersView.js";
 import "core-js/stable";
 //Polyfilling asyn/await
 import "regenerator-runtime/runtime";
-import pagination from "./views/pagination.js";
-
-//Implementing parcels HMR
-if (module.hot) {
-  module.hot.accept();
-}
+import parentView from "./views/parentView.js";
 
 const parentElement = document.querySelector(".searched-item");
-
 //Function to get a receipe
 //handler function in subscriber-publisher design pattern
+
 const controlReceipies = async function () {
   try {
     //Get the hash from the window url
@@ -40,7 +38,6 @@ const controlReceipies = async function () {
     //When loading without an id it gives an error
     //To stop that do a guard clause
     if (!id) return;
-
     //0)Update side bar with selected result by highlighting it
     asideResultsView.update(model.getSearchResultsInPage());
 
@@ -141,9 +138,21 @@ const controlOrdersRender = function () {
   ordersView.render(model.state.orders);
 };
 
+//Controller to get the comments
+const controlComments = function (comments) {
+  console.log(comments);
+};
+
+const callSecond = function (handler) {
+  handler();
+};
+const callTestimonials = function () {
+  testimonialLoad();
+};
 //Initialization method
 //Method which executes everything once the page is loaded
 //Publisher Subscriber Pattern
+
 const init = function () {
   bookmarksView.addHandlerRenderBookMarks(controlBookmarksRender);
   ordersView.addHandlerOrdersRender(controlOrdersRender);
@@ -153,6 +162,7 @@ const init = function () {
   receipeView.addHandlerAddOrder(controlOrder);
   searchResultsView.addHandlerSearch(getAllReceipies);
   pagination.addhandlerPagination(btnPagination);
+  commentBoxView.addHandlerFormValues(controlComments);
 };
 
 init();
