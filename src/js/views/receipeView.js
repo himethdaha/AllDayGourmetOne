@@ -1,5 +1,5 @@
 import parentView from "./parentView.js";
-import Fraction from "fractional";
+import { numberToFraction } from "../helpers.js";
 ("use strict");
 
 //Class for the Receipe View
@@ -190,7 +190,7 @@ class ReceipeView extends parentView {
       <li class="ingredient">
       <svg xmlns="http://www.w3.org/2000/svg"  viewBox="0 0 256 256" class="ingredient-icon"><rect width="256" height="256" fill="none"></rect><polyline points="172 104 113.3 160 84 132" fill="none"  stroke-linecap="round" stroke-linejoin="round" stroke-width="24"></polyline><circle cx="128" cy="128" r="96" fill="none"  stroke-linecap="round" stroke-linejoin="round" stroke-width="24"></circle></svg>
       <div class="ingredient-amount">${
-        ing.quantity ? new Fraction.Fraction(ing.quantity).toString() : ""
+        ing.quantity ? numberToFraction(ing.quantity).toString() : ""
       }</div>
       <span class="receipe-ingredient-unit">${ing.unit} ${
           ing.description
