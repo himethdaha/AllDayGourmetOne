@@ -4,8 +4,8 @@
   "description": "Food Delivery App",
   "default": "Index.html",
   "scripts": {
-    "start": "parcel Index.html",
-    "build": "npx parcel build index.html"
+    "start": "parcel serve Index.html",
+    "build": "parcel build Index.html --dist-dir ./dist"
   },
   "repository": {
     "type": "git",
@@ -19,12 +19,13 @@
   "homepage": "https://github.com/himethdaha/AllDayGourmet#readme",
   "devDependencies": {
     "@babel/plugin-proposal-private-methods": "^7.16.7",
-    "@babel/plugin-proposal-private-property-in-object": "^7.16.7"
+    "@babel/plugin-proposal-private-property-in-object": "^7.16.7",
+    "@babel/plugin-proposal-class-properties": "^7.13.0",
+    "parcel": "^2.0.0-nightly.644"
   },
   "dependencies": {
     "core-js": "^3.20.3",
     "fractional": "^1.0.0",
-    "parcel": "^2.2.1",
     "regenerator-runtime": "^0.13.9"
   },
   "babel": {
