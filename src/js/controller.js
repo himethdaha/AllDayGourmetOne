@@ -15,7 +15,6 @@ import bookmarksView from "./views/bookmarksView.js";
 import ordersView from "./views/ordersView.js";
 //Import commentBox view
 import commentBoxView from "./views/commentBoxView.js";
-
 ("use strict");
 //Import from model
 
@@ -143,12 +142,6 @@ const controlComments = function (comments) {
   console.log(comments);
 };
 
-const callSecond = function (handler) {
-  handler();
-};
-const callTestimonials = function () {
-  testimonialLoad();
-};
 //Initialization method
 //Method which executes everything once the page is loaded
 //Publisher Subscriber Pattern
